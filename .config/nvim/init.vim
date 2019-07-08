@@ -20,6 +20,8 @@ if dein#load_state('~/.cache/dein')
   call dein#add('tpope/vim-fugitive')
   call dein#add('Shougo/deoplete.nvim')
 	call dein#add('Shougo/neoinclude.vim')
+	call dein#add('junegunn/fzf.vim')
+	call dein#add('Shougo/deol.nvim')
 
 " vue
   call dein#add('posva/vim-vue')
@@ -71,29 +73,34 @@ set number
 set rtp+=/usr/local/opt/fzf
 
 set background=dark
-"colorscheme palenight
+colorscheme palenight
 let g:enable_bold_font=1
 let g:enable_italic_font=1
 let g:hybrid_transparent_background=1
 let Grep_Skip_Dirs='node_modules dist build'
 let g:airline_powerline_fonts=1 
-if (has("nvim"))
-	  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-endif
+
 " neoformatter
 let g:standard_prettier_settings={
               \ 'exe': 'prettier',
-              \ 'args': ['--stdin', '--stdin-filepath', '%:p', '--single-quote'],
+              \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
               \ 'stdin': 1,
               \ }
+
+let g:standard_tslint_settings={
+        \ 'exe': 'tslint',
+        \ 'args': ['--fix', '-c tslint.json'],
+        \ 'replace': 1
+        \ }
+
+
 let g:neoformat_typescript_prettier=g:standard_prettier_settings
 let g:neoformat_enabled_typescript=['prettier']
-let g:neoformat_typescript_prettier=g:standard_prettier_settings
-let g:neoformat_enabled_typescript=['prettier']
+
+let g:neoformat_javascript_prettier=g:standard_prettier_settings
+let g:neoformat_enabled_javascript=['eslint']
 
 let g:neoformat_enabled_vue=['prettier']
-
 
 let g:neoformat_markdown_prettier = g:standard_prettier_settings
 let g:neoformat_enabled_markdown = ['prettier']
@@ -109,6 +116,32 @@ augroup fmt
 	autocmd BufWritePre * undojoin | Neoformat
 augroup END
 
+augroup GENERIC
+	autocmd!
 
+	map <c-t>					:Deol -split=vertical <cr>
+	tnoremap <ESC>		<C-\><C-n>
+	map <c-v><c-r>		:vertical resize 
+	map <c-c>					:Ag 
+augroup END
 
+augroup XML
+  autocmd!
+
+  autocmd FileType xml let g:xml_syntax_folding=1
+  autocmd FileType xml setlocal foldmethod=syntax
+  autocmd FileType xml normal zR
+augroup END
+
+augroup TYPESCRIPT
+	autocmd!
+
+	autocmd FileType typescript setlocal foldmethod=syntax
+  autocmd FileType typescript normal zR
+	
+	" Key mappings
+	map <c-f> :TSGetCodeFix <cr>
+	map <c-d> :TSDefPreview <cr>
+	map <c-e> :TSGetErrorFull <cr>
+augroup END
 
