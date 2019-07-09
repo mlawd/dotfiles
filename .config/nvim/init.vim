@@ -71,9 +71,11 @@ set shiftwidth=2
 set softtabstop=2
 set number
 set rtp+=/usr/local/opt/fzf
-
+set signcolumn=yes
+let g:netrw_liststyle = 3
 set background=dark
 colorscheme palenight
+
 let g:enable_bold_font=1
 let g:enable_italic_font=1
 let g:hybrid_transparent_background=1
@@ -110,6 +112,14 @@ let g:neoformat_enabled_json = ['prettier']
 
 let g:neoformat_scss_prettier = g:standard_prettier_settings
 let g:neoformat_enabled_scss = ['prettier']
+
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+		\ 'vue': 1,
+    \}
 
 augroup fmt
 	autocmd!
