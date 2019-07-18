@@ -132,7 +132,12 @@ augroup GENERIC
 	map <c-t>					:Deol -split=vertical <cr>
 	tnoremap <ESC>		<C-\><C-n>
 	map <c-v><c-r>		:vertical resize 
-	map <c-c>					:Ag 
+	map <c-s>					:Ag 
+	map <c-g><c-s>		:Gstatus <cr>
+	map <c-g><c-p>		:Gpush <cr>
+	map <c-g><c-f>		:! git push --force-with-lease <cr>
+	map <c-r>					:%s/
+	map <c-h>					:noh <cr>
 augroup END
 
 augroup XML
@@ -154,4 +159,10 @@ augroup TYPESCRIPT
 	map <c-d> :TSDefPreview <cr>
 	map <c-e> :TSGetErrorFull <cr>
 augroup END
+
+augroup TERMINAL
+	autocmd!
+
+	autocmd FileType deol set signcolumn=no
+augroup END	
 
