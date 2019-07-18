@@ -54,6 +54,9 @@ if dein#load_state('~/.cache/dein')
 
   call dein#end()
   call dein#save_state()
+
+" dotnet
+	call dein#add('OmniSharp/omnisharp-vim')
 endif
 
 filetype plugin indent on
@@ -166,3 +169,14 @@ augroup TERMINAL
 	autocmd FileType deol set signcolumn=no
 augroup END	
 
+" OMNI_SHARP
+let g:OmniSharp_server_stdio = 1
+let g:OmniSharp_highlight_types = 2
+let g:OmniSharp_selector_ui = 'fzf'
+
+augroup CS
+	autocmd!
+
+	map <c-f> :OmniSharpCodeFormat <cr>
+
+augroup END
