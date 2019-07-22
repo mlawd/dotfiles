@@ -132,15 +132,17 @@ augroup END
 augroup GENERIC
 	autocmd!
 
-	map <c-t>					:Deol -split=vertical <cr>
+	map <c-t>					:Deol -split=vertical<cr>
 	tnoremap <ESC>		<C-\><C-n>
 	map <c-v><c-r>		:vertical resize 
-	map <c-s>					:Ag 
-	map <c-g><c-s>		:Gstatus <cr>
-	map <c-g><c-p>		:Gpush <cr>
-	map <c-g><c-f>		:! git push --force-with-lease <cr>
-	map <c-r>					:%s/
-	map <c-h>					:noh <cr>
+	map <c-s><c-g>		:Ag 
+	map <c-g><c-s>		:Gstatus<cr>
+	map <c-g><c-p>		:Gpush<cr>
+	map <c-g><c-f>		:! git push --force-with-lease<cr>
+	map <c-s><c-r>		:%s/
+	map <c-h>					:noh<cr>
+	map <c-x>					:Explore<cr>
+	map <c-f>					:fzf<cr>
 augroup END
 
 augroup XML
@@ -158,9 +160,10 @@ augroup TYPESCRIPT
   autocmd FileType typescript normal zR
 	
 	" Key mappings
-	map <c-f> :TSGetCodeFix <cr>
-	map <c-d> :TSDefPreview <cr>
-	map <c-e> :TSGetErrorFull <cr>
+	autocmd FileType typescript map <c-F> :TSGetCodeFix<cr>
+	autocmd FileType typescript map <c-p> :TSDefPreview<cr>
+	autocmd FileType typescript map <c-d> :TSDefPreview<cr>
+	autocmd FileType typescript map <c-e> :TSGetErrorFull<cr>
 augroup END
 
 augroup TERMINAL
@@ -177,6 +180,6 @@ let g:OmniSharp_selector_ui = 'fzf'
 augroup CS
 	autocmd!
 
-	map <c-f> :OmniSharpCodeFormat <cr>
-
+	autocmd FileType cs map <c-F> :OmniSharpCodeFormat<cr>
+	autocmd FileType cs map <c-d> :OmniSharpGoToDefinition<cr>
 augroup END
