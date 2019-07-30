@@ -142,7 +142,7 @@ augroup GENERIC
 	map <c-s><c-r>		:%s/
 	map <c-h>					:noh<cr>
 	map <c-x>					:Explore<cr>
-	map <c-f>					:fzf<cr>
+	map <c-f>					:FZF<cr>
 augroup END
 
 augroup XML
@@ -182,4 +182,11 @@ augroup CS
 
 	autocmd FileType cs map <c-F> :OmniSharpCodeFormat<cr>
 	autocmd FileType cs map <c-d> :OmniSharpGoToDefinition<cr>
+augroup END
+
+" MARKDOWN
+augroup MD
+	autocmd!
+
+	autocmd FileType md :setlocal spell spelllang=en_us
 augroup END
