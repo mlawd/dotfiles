@@ -31,7 +31,11 @@ if dein#load_state('~/.cache/dein')
 
 " typescript
   call dein#add('leafgarland/typescript-vim')
+	call dein#add('HerringtonDarkholme/yats.vim')
   call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
+
+" jsx
+	call dein#add('MaxMEllon/vim-jsx-pretty')
 
 " themes
   call dein#add('kristijanhusak/vim-hybrid-material')
@@ -45,18 +49,17 @@ if dein#load_state('~/.cache/dein')
 " html
   call dein#add('valloric/MatchTagAlways', {'on_ft': 'html'})
   call dein#add('othree/html5.vim')
-  call dein#add('posva/vim-vue')
 
 " css
   call dein#add('hail2u/vim-css3-syntax')
   call dein#add('ap/vim-css-color')
   call dein#add('ncm2/ncm2-cssomni')
 
-  call dein#end()
-  call dein#save_state()
-
 " dotnet
 	call dein#add('OmniSharp/omnisharp-vim')
+
+  call dein#end()
+  call dein#save_state()
 endif
 
 filetype plugin indent on
@@ -99,11 +102,14 @@ let g:standard_tslint_settings={
         \ }
 
 
+let g:neoformat_typescriptreact_prettier=g:standard_prettier_settings
+let g:neoformat_enabled_typescriptreact=['prettier']
+
 let g:neoformat_typescript_prettier=g:standard_prettier_settings
 let g:neoformat_enabled_typescript=['prettier']
 
 let g:neoformat_javascript_prettier=g:standard_prettier_settings
-let g:neoformat_enabled_javascript=['eslint']
+let g:neoformat_enabled_javascript=['prettier']
 
 let g:neoformat_enabled_vue=['prettier']
 
@@ -115,6 +121,7 @@ let g:neoformat_enabled_json = ['prettier']
 
 let g:neoformat_scss_prettier = g:standard_prettier_settings
 let g:neoformat_enabled_scss = ['prettier']
+
 
 let g:mta_filetypes = {
     \ 'html' : 1,
@@ -142,7 +149,7 @@ augroup GENERIC
 	map <c-s><c-r>		:%s/
 	map <c-h>					:noh<cr>
 	map <c-x>					:Explore<cr>
-	map <c-f>					:FZF<cr>
+	map <Home>					:FZF<cr>
 augroup END
 
 augroup XML
@@ -160,9 +167,9 @@ augroup TYPESCRIPT
   autocmd FileType typescript normal zR
 	
 	" Key mappings
-	autocmd FileType typescript map <c-F> :TSGetCodeFix<cr>
+	autocmd FileType typescript map <C-S-F> :TSGetCodeFix<cr>
 	autocmd FileType typescript map <c-p> :TSDefPreview<cr>
-	autocmd FileType typescript map <c-d> :TSDefPreview<cr>
+	autocmd FileType typescript map <c-d> :TSDef<cr>
 	autocmd FileType typescript map <c-e> :TSGetErrorFull<cr>
 augroup END
 
@@ -173,15 +180,14 @@ augroup TERMINAL
 augroup END	
 
 " OMNI_SHARP
-let g:OmniSharp_server_stdio = 1
 let g:OmniSharp_highlight_types = 2
 let g:OmniSharp_selector_ui = 'fzf'
 
 augroup CS
 	autocmd!
 
-	autocmd FileType cs map <c-F> :OmniSharpCodeFormat<cr>
-	autocmd FileType cs map <c-d> :OmniSharpGoToDefinition<cr>
+	autocmd FileType cs map <C-S-F> :OmniSharpCodeFormat<cr>
+	autocmd FileType cs map <c-d> :OmniSharpGotoDefinition<cr>
 augroup END
 
 " MARKDOWN
@@ -189,4 +195,9 @@ augroup MD
 	autocmd!
 
 	autocmd FileType md :setlocal spell spelllang=en_us
+	autocmd FileType markdown :setlocal spell spelllang=en_us
 augroup END
+
+if filereadable(".nvim")
+	source .nvim
+endif
