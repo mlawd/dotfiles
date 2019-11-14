@@ -31,16 +31,19 @@ if dein#load_state('~/.cache/dein')
 
 " typescript
   call dein#add('leafgarland/typescript-vim')
-	call dein#add('HerringtonDarkholme/yats.vim')
   call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
 
-" jsx
+" javascript
+	call dein#add('yuezk/vim-js')
+
+" jsx/tsx
 	call dein#add('MaxMEllon/vim-jsx-pretty')
 
 " themes
   call dein#add('kristijanhusak/vim-hybrid-material')
 	call dein#add('vim-airline/vim-airline')
 	call dein#add('drewtempelmeyer/palenight.vim')
+	call dein#add('flrnprz/candid.vim')
 
 " style
 	call dein#add('editorconfig/editorconfig-vim')
@@ -56,7 +59,8 @@ if dein#load_state('~/.cache/dein')
   call dein#add('ncm2/ncm2-cssomni')
 
 " dotnet
-	call dein#add('OmniSharp/omnisharp-vim')
+"	call dein#add('OmniSharp/omnisharp-vim')
+"	call dein#add('OrangeT/vim-csharp')
 
   call dein#end()
   call dein#save_state()
@@ -80,7 +84,7 @@ set rtp+=/usr/local/opt/fzf
 set signcolumn=yes
 let g:netrw_liststyle = 3
 set background=dark
-colorscheme palenight
+colorscheme candid
 
 let g:enable_bold_font=1
 let g:enable_italic_font=1
@@ -91,7 +95,7 @@ let g:airline_powerline_fonts=1
 " neoformatter
 let g:standard_prettier_settings={
               \ 'exe': 'prettier',
-              \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
+              \ 'args': ['--stdin', '--stdin-filepath', '%:p', '--prose-wrap', 'always'],
               \ 'stdin': 1,
               \ }
 
