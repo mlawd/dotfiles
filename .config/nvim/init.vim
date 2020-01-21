@@ -30,7 +30,7 @@ if dein#load_state('~/.cache/dein')
   call dein#add('jparise/vim-graphql')
 
 " typescript
-  call dein#add('leafgarland/typescript-vim')
+  call dein#add('HerringtonDarkholme/yats.vim')
   call dein#add('mhartington/nvim-typescript', {'build': './install.sh'})
 
 " javascript
@@ -92,6 +92,7 @@ let g:hybrid_transparent_background=1
 let Grep_Skip_Dirs='node_modules dist build'
 let g:airline_powerline_fonts=1 
 
+let g:nvim_typescript#vue_support=1
 " neoformatter
 let g:standard_prettier_settings={
               \ 'exe': 'prettier',
