@@ -54,6 +54,8 @@ set autoread " reload files on disk change
 set completeopt=longest,menuone
 set cmdheight=2
 
+let g:coc_global_extensions=[ 'coc-tsserver', 'coc-vetur', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json' ]
+
 augroup GENERIC
 	autocmd!
 
