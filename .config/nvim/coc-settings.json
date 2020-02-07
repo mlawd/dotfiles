@@ -1,5 +1,5 @@
 {
-	"coc.preferences.formatOnSaveFiletypes": ["css", "Markdown", "typescript", "vue", "javascript"],
+	"coc.preferences.formatOnSaveFiletypes": ["css", "Markdown", "typescript", "vue", "javascript", "less"],
   "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "⚠",
   "diagnostic.infoSign": "•"

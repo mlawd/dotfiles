@@ -79,6 +79,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> gtd <Plug>(coc-type-definition)
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
