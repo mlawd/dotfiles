@@ -25,6 +25,9 @@ Plug 'ap/vim-css-color'
 " vue
 Plug 'posva/vim-vue'
 
+" swig
+Plug 'SpaceVim/vim-swig'
+
 " editor
 Plug 'junegunn/fzf' "installs the binary
 Plug 'junegunn/fzf.vim'
@@ -43,6 +46,7 @@ set number " line numbers
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
+set expandtab
 set rtp+=/usr/local/opt/fzf
 set background=dark
 colorscheme candid
@@ -54,7 +58,11 @@ set autoread " reload files on disk change
 set completeopt=longest,menuone
 set cmdheight=2
 
+set foldmethod=syntax
+autocmd Syntax * normal zR
+
 let g:coc_global_extensions=[ 'coc-tsserver', 'coc-vetur', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json' ]
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 augroup GENERIC
 	autocmd!
@@ -99,4 +107,7 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
+if !empty(glob(".init.vim"))
+	source .init.vim
+endif
 
