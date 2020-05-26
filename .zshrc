@@ -2,7 +2,15 @@
 export ZSH=$HOME/.oh-my-zsh
 
 # pure prompt
-fpath+=('/home/mld/.npm-global/lib/node_modules/pure-prompt/functions')
+# fpath+=('/home/mld/.npm-global/lib/node_modules/pure-prompt/functions')
+
+FILE="$HOME/.local.zshrc"
+if test -f "$FILE"; then
+  source "$FILE"
+  else
+	  echo "Does not exist"
+fi
+
 autoload -U promptinit; promptinit
 zstyle :prompt:pure:path color 107
 
@@ -19,9 +27,9 @@ zrc(){
   cd $WD
 }
 
-# wsl project specific stuff
-alias projects='cd /mnt/c/projects'
-cd /mnt/c/projects
+alias vimrc='n ~/.config/nvim/init.vim'
+
+# cd /mnt/c/projects
 
 # default editor
 export VISUAL=vim
@@ -34,7 +42,10 @@ fi
 
 # git alias'
 alias git-pretty='git log --all --graph --decorate --oneline --simplify-by-decoration'
-alias gco='git checkout'
+
+gbc() {
+  git branch -D $(git branch | grep -v \* | grep -v master)
+}
 
 # mkdir & cd
 cdf () {
@@ -44,3 +55,5 @@ cdf () {
 plugins=()
 source $ZSH/oh-my-zsh.sh
 prompt pure
+
+. $HOME/.asdf/asdf.sh

@@ -107,6 +107,10 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
+if !empty(glob("~/.local.vim"))
+  source ~/.local.vim
+endif
+
 if !empty(glob(".init.vim"))
 	source .init.vim
 endif
