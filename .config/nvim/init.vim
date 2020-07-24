@@ -89,6 +89,9 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gtd <Plug>(coc-type-definition)
 
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
@@ -106,6 +109,13 @@ augroup mygroup
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
+" MARKDOWN
+augroup MD
+	autocmd!
+
+	autocmd FileType md :setlocal spell spelllang=en_uk
+	autocmd FileType markdown :setlocal spell spelllang=en_uk
+augroup END
 
 if !empty(glob("~/.local.vim"))
   source ~/.local.vim

@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/home/np-matt/projects/mattlaw.dev/content/blog/lockdown'
+let g:netrw_dirhist_4='/home/np-matt/projects/mattlaw.dev/content/blog/jamstack-conf'
+let g:netrw_dirhist_3='/home/np-matt/projects/mattlaw.dev/content/blog'
+let g:netrw_dirhist_2='/home/np-matt/projects/mattlaw.dev/content/blog/push-me-pull-you'
+let g:netrw_dirhist_1='/home/np-matt/projects/mattlaw.dev/content/blog/graphql-with-dotnet'
+let g:netrw_dirhist_0='/home/np-matt/projects/mattlaw.dev/content/blog'
+let g:netrw_dirhist_9='/home/np-matt/projects/mattlaw.dev/content/blog/push-me-pull-you'
+let g:netrw_dirhist_8='/home/np-matt/projects/mattlaw.dev/src/components/about-sections'
+let g:netrw_dirhist_7='/home/np-matt/projects/mattlaw.dev/src'
+let g:netrw_dirhist_6='/home/np-matt/projects/mattlaw.dev/src/pages'
