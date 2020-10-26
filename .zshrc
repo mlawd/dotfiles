@@ -16,8 +16,7 @@ zstyle :prompt:pure:path color 107
 
 ZSH_THEME=""
 
-# setup nvim because 0.4 ubuntu :(
-alias n='~/squashfs-root/AppRun'
+alias n='nvim'
 
 # edit & source zshrc
 zrc(){
@@ -27,12 +26,12 @@ zrc(){
   cd $WD
 }
 
-alias vimrc='n ~/.config/nvim/init.vim'
+alias vrc='n ~/.config/nvim/init.vim'
 
 # cd /mnt/c/projects
 
 # default editor
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # ag ignores
@@ -42,14 +41,29 @@ fi
 
 # git alias'
 alias git-pretty='git log --all --graph --decorate --oneline --simplify-by-decoration'
+alias gca='git commit --amend --no-edit'
 
 gbc() {
-  git branch -D $(git branch | grep -v \* | grep -v master)
+  git branch -D $(git branch | fzf -m)
+}
+
+git-conflict() {
+  FILE=$(git status --porcelain | grep ^UU | fzf)
+  echo ${FILE:3}
 }
 
 # mkdir & cd
 cdf () {
   mkdir $1 && cd $1
+}
+
+co() {
+  branch=$(git branch | fzf)
+
+  if [[ -n "$branch" ]]; then
+    bnw="$(echo -e "${branch}" | tr -d '[:space:]')"
+    git checkout $bnw
+  fi
 }
 
 plugins=()

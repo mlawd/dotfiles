@@ -1,8 +1,20 @@
 {
-	"coc.preferences.formatOnSaveFiletypes": ["scss", "css", "markdown", "typescript", "vue", "json", "javascript"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "scss",
+    "css",
+    "markdown",
+    "typescript",
+    "vue",
+    "json",
+    "javascript",
+    "markdown.pandoc"
+  ],
   "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "⚠",
   "diagnostic.infoSign": "•",
-	"prettier.disableLanguages": [ ],
-	"vetur.useWorkspaceDependencies": true
+  "prettier.disableLanguages": [],
+  "prettier.arrowParens": "avoid",
+  "prettier.semi": true,
+  "prettier.proseWrap": "always",
+  "vetur.useWorkspaceDependencies": true
 }

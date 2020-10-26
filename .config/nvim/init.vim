@@ -28,8 +28,13 @@ Plug 'posva/vim-vue'
 " swig
 Plug 'SpaceVim/vim-swig'
 
+" markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+"Plug 'vim-pandoc/vim-pandoc-syntax'
+"Plug 'vim-pandoc/vim-pandoc'
+
 " editor
-Plug 'junegunn/fzf' "installs the binary
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } "installs the binary
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-fugitive'
@@ -63,6 +68,10 @@ autocmd Syntax * normal zR
 
 let g:coc_global_extensions=[ 'coc-tsserver', 'coc-vetur', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json' ]
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+let g:coc_filetype_map = {
+                  \ 'markdown.pandoc': 'markdown',
+                  \ }
 
 augroup GENERIC
 	autocmd!
@@ -112,9 +121,11 @@ augroup end
 " MARKDOWN
 augroup MD
 	autocmd!
+  "au! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 	autocmd FileType md :setlocal spell spelllang=en_uk
 	autocmd FileType markdown :setlocal spell spelllang=en_uk
+	"autocmd FileType markdown.pandoc :setlocal spell spelllang=en_uk
 augroup END
 
 if !empty(glob("~/.local.vim"))
