@@ -6,8 +6,8 @@
     "typescript",
     "vue",
     "json",
-    "javascript",
-    "markdown.pandoc"
+    "markdown.pandoc",
+    "svelte"
   ],
   "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "⚠",
@@ -16,5 +16,7 @@
   "prettier.arrowParens": "avoid",
   "prettier.semi": true,
   "prettier.proseWrap": "always",
-  "vetur.useWorkspaceDependencies": true
+  "prettier.onlyUseLocalVersion": true,
+  "vetur.useWorkspaceDependencies": true,
+  "svelte.enable-ts-plugin": true
 }

@@ -26,7 +26,16 @@ zrc(){
   cd $WD
 }
 
+lcl(){
+  WD=$(pwd);
+  n ~/.local.zshrc
+  source ~/.local.zshrc
+  cd $WD
+}
+
 alias vrc='n ~/.config/nvim/init.vim'
+
+export PATH="$PATH:$HOME/.yarn/bin"
 
 # cd /mnt/c/projects
 
@@ -35,9 +44,12 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # ag ignores
-if type ag &> /dev/null; then
-	export FZF_DEFAULT_COMMAND='ag -p ~/.gitignore -g ""'
+if ! command -v ag &> /dev/null
+then
+  sudo apt-get install silversearcher-ag
 fi
+
+export FZF_DEFAULT_COMMAND='ag -p ~/.gitignore -g ""'
 
 # git alias'
 alias git-pretty='git log --all --graph --decorate --oneline --simplify-by-decoration'
@@ -66,7 +78,7 @@ co() {
   fi
 }
 
-plugins=()
+plugins=(git)
 source $ZSH/oh-my-zsh.sh
 prompt pure
 
