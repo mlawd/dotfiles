@@ -22,8 +22,12 @@ Plug 'jparise/vim-graphql'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
 
+" svelte
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
+
 " vue
 Plug 'posva/vim-vue'
+Plug 'yaegassy/coc-volar', {'do': 'yarn install --frozen-lockfile'}
 
 " swig
 Plug 'SpaceVim/vim-swig'
@@ -62,11 +66,12 @@ set noshowmode " hide default command bar at bottomn
 set autoread " reload files on disk change
 set completeopt=longest,menuone
 set cmdheight=2
+set backupcopy=yes
 
 set foldmethod=syntax
 autocmd Syntax * normal zR
 
-let g:coc_global_extensions=[ 'coc-tsserver', 'coc-vetur', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json' ]
+let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json', 'coc-svelte' ]
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 let g:coc_filetype_map = {
@@ -94,14 +99,17 @@ nmap <leader>cf  <Plug>(coc-fix-current)
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
+nmap <silent> <c-space> <Plug>(coc-codeaction-line)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gtd <Plug>(coc-type-definition)
+nmap <silent> cr <Plug>(coc-rename)
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+nmap <silent> <c-g> :Git<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
