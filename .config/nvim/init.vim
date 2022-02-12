@@ -42,6 +42,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } "installs the binary
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-fugitive'
+Plug 'akinsho/toggleterm.nvim'
 
 call plug#end()
 
@@ -59,7 +60,7 @@ set expandtab
 set rtp+=/usr/local/opt/fzf
 set background=dark
 colorscheme candid
-let g:airline_powerline_fonts=1 
+"let g:airline_powerline_fonts=1 
 set signcolumn=yes
 set clipboard=unnamedplus " yank and pase with system clipboard
 set noshowmode " hide default command bar at bottomn
@@ -71,7 +72,7 @@ set backupcopy=yes
 set foldmethod=syntax
 autocmd Syntax * normal zR
 
-let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json', 'coc-svelte' ]
+let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml' ]
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 let g:coc_filetype_map = {
@@ -85,8 +86,8 @@ augroup GENERIC
 	tnoremap <ESC>		<C-\><C-n>
 	map <c-v><c-r>		:vertical resize 
 	map <c-s><c-g>		:Ag 
-	map <c-g><c-s>		:Gstatus<cr>
-	map <c-g><c-p>		:Gpush<cr>
+	map <c-g><c-s>		:Git<cr>
+	map <c-g><c-p>		:Git push<cr>
 	map <c-g><c-f>		:! git push --force-with-lease<cr>
 	map <c-s><c-r>		:%s/
 	map <c-h>					:noh<cr>
@@ -103,6 +104,7 @@ nmap <silent> <c-space> <Plug>(coc-codeaction-line)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gtd <Plug>(coc-type-definition)
+nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> cr <Plug>(coc-rename)
 
 vmap <leader>f  <Plug>(coc-format-selected)
@@ -144,3 +146,4 @@ if !empty(glob(".init.vim"))
 	source .init.vim
 endif
 
+source ~/dotfiles/.config/nvim/lua_init.lua
