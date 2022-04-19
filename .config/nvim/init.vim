@@ -12,7 +12,7 @@ Plug 'flrnprz/candid.vim'
 Plug 'vim-airline/vim-airline'
 
 " javascript
-Plug 'othree/yajs.vim'
+" Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 
 " gql
@@ -33,7 +33,7 @@ Plug 'yaegassy/coc-volar', {'do': 'yarn install --frozen-lockfile'}
 Plug 'SpaceVim/vim-swig'
 
 " markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install'  }
 "Plug 'vim-pandoc/vim-pandoc-syntax'
 "Plug 'vim-pandoc/vim-pandoc'
 
@@ -72,7 +72,7 @@ set backupcopy=yes
 set foldmethod=syntax
 autocmd Syntax * normal zR
 
-let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml' ]
+let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint' ]
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 let g:coc_filetype_map = {

@@ -48,7 +48,7 @@ then
   sudo apt-get install silversearcher-ag
 fi
 
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore-dir node_modules --ignore-dir .serverless -p ~/.gitignore -g ""'
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore-dir .git --ignore-dir node_modules --ignore-dir .serverless -p ~/.gitignore -g ""'
 
 # git alias'
 alias git-pretty='git log --all --graph --decorate --oneline --simplify-by-decoration'
