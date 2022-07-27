@@ -10,6 +10,7 @@ Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 " theme
 Plug 'flrnprz/candid.vim'
 Plug 'vim-airline/vim-airline'
+Plug 'chriskempson/base16-vim'
 
 " javascript
 " Plug 'othree/yajs.vim'
@@ -43,6 +44,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-fugitive'
 Plug 'akinsho/toggleterm.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kdheepak/lazygit.nvim'
+" Plug 'romgrk/barbar.nvim'
 
 call plug#end()
 
@@ -59,8 +63,10 @@ set softtabstop=2
 set expandtab
 set rtp+=/usr/local/opt/fzf
 set background=dark
-colorscheme candid
+" colorscheme candid
+colorscheme base16-default-dark
 "let g:airline_powerline_fonts=1 
+"let g:airline_statusline_ontop=1
 set signcolumn=yes
 set clipboard=unnamedplus " yank and pase with system clipboard
 set noshowmode " hide default command bar at bottomn
@@ -93,6 +99,7 @@ augroup GENERIC
 	map <c-h>					:noh<cr>
 	map <c-x>					:Explore<cr>
 	map <Home>				:FZF<cr>
+  nnoremap <silent> <leader>gg :LazyGit<CR>
 augroup END
 
 " Fix current line
@@ -106,12 +113,17 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gtd <Plug>(coc-type-definition)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> cr <Plug>(coc-rename)
+nmap <silent> crt :call RestartTsServer()<CR>
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 nmap <silent> <c-g> :Git<CR>
+
+function! RestartTsServer()
+  call CocAction('runCommand', 'tsserver.restart')
+endfunction
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
