@@ -87,6 +87,7 @@ source $ZSH/oh-my-zsh.sh
 prompt pure
 
 . $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
