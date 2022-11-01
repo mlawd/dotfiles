@@ -1,6 +1,9 @@
 echo "Installing homebrew"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
+echo "Installing rectangle"
+brew install --cask rectangle
 echo "Installing zsh"
 brew install zsh
 echo "Installing oh-my-zsh"
