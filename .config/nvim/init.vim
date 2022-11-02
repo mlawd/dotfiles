@@ -118,6 +118,7 @@ nmap <silent> crt :call RestartTsServer()<CR>
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 nmap <silent> <c-g> :Git<CR>
 
