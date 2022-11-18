@@ -2,6 +2,8 @@ echo "Installing homebrew"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+echo "Installing FZF"
+brew install fzf
 echo "Installing rectangle"
 brew install --cask rectangle
 echo "Installing zsh"
@@ -16,6 +18,8 @@ echo "Installing ASDF"
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
 echo "Installing stow"
 brew install stow
+echo "Installing lazygit"
+brew install lazygit
 
 echo "Cloning dotfiles"
 git clone https://github.com/mlawd/dotfiles.git
