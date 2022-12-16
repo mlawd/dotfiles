@@ -11,6 +11,7 @@ Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'flrnprz/candid.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'chriskempson/base16-vim'
+Plug 'kyoz/purify', { 'rtp': 'vim' }
 
 " javascript
 " Plug 'othree/yajs.vim'
@@ -28,7 +29,6 @@ Plug 'evanleck/vim-svelte', {'branch': 'main'}
 
 " vue
 Plug 'posva/vim-vue'
-Plug 'yaegassy/coc-volar', {'do': 'yarn install --frozen-lockfile'}
 
 " swig
 Plug 'SpaceVim/vim-swig'
@@ -54,7 +54,7 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-syntax enable " enable but don't override syntax
+syntax on" enable but don't override syntax
 
 set number " line numbers
 set tabstop=2
@@ -62,9 +62,10 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 set rtp+=/usr/local/opt/fzf
-set background=dark
-" colorscheme candid
-colorscheme base16-default-dark
+" set background=dark
+colorscheme candid
+"colorscheme base16-default-dark
+"colorscheme purify
 "let g:airline_powerline_fonts=1 
 "let g:airline_statusline_ontop=1
 set signcolumn=yes
@@ -88,7 +89,6 @@ let g:coc_filetype_map = {
 augroup GENERIC
 	autocmd!
 
-	map <c-t>					:Deol -split=vertical<cr>
 	tnoremap <ESC>		<C-\><C-n>
 	map <c-v><c-r>		:vertical resize 
 	map <c-s><c-g>		:Ag 
