@@ -24,7 +24,7 @@ brew install lazygit
 echo "Cloning dotfiles"
 git clone https://github.com/mlawd/dotfiles.git
 mv ~/.zshrc ~/.zshrc_old
-(cd dotfiles && stow -t ~ .)
+(cd .. && stow -t ~ .)
 source ~/.zshrc
 
 echo "Installing Node"

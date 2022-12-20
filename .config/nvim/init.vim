@@ -47,7 +47,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'akinsho/toggleterm.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kdheepak/lazygit.nvim'
-" Plug 'romgrk/barbar.nvim'
+Plug 'romgrk/barbar.nvim'
 
 call plug#end()
 
@@ -70,6 +70,9 @@ set rtp+=/usr/local/opt/fzf
 colorscheme OceanicNext
 "let g:airline_powerline_fonts=1 
 "let g:airline_statusline_ontop=1
+let g:airline_theme='oceanicnext'
+let g:airline#extensions#tabline#enabled = 1
+
 set signcolumn=yes
 set clipboard=unnamedplus " yank and pase with system clipboard
 set noshowmode " hide default command bar at bottomn
@@ -117,12 +120,15 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> cr <Plug>(coc-rename)
 nmap <silent> crt :call RestartTsServer()<CR>
 
+nnoremap <silent> <c-]> :bnext<CR>
+nnoremap <silent> <c-[> :bprevious<CR>
+nnoremap <silent> <c-c> :bdelete<CR>
+
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-nmap <silent> <c-g> :Git<CR>
 
 function! RestartTsServer()
   call CocAction('runCommand', 'tsserver.restart')
