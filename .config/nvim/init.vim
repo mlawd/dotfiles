@@ -84,7 +84,7 @@ set backupcopy=yes
 set foldmethod=syntax
 autocmd Syntax * normal zR
 
-let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-html', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint' ]
+let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint' ]
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 let g:coc_filetype_map = {
@@ -112,13 +112,12 @@ nmap <leader>cf  <Plug>(coc-fix-current)
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
-nmap <silent> <c-space> <Plug>(coc-codeaction-line)
+nmap <silent> <C-space> <Plug>(coc-codeaction-line)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gtd <Plug>(coc-type-definition)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> cr <Plug>(coc-rename)
-nmap <silent> crt :call RestartTsServer()<CR>
 
 nnoremap <silent> <c-]> :bnext<CR>
 nnoremap <silent> <c-[> :bprevious<CR>

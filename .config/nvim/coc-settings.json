@@ -17,7 +17,5 @@
   "prettier.arrowParens": "avoid",
   "prettier.semi": true,
   "vetur.useWorkspaceDependencies": true,
-  "svelte.enable-ts-plugin": true,
-  "tsserver.log": "verbose",
-  "tsserver.trace.server": "verbose"
+  "svelte.enable-ts-plugin": true
 }

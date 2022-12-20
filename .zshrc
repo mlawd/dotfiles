@@ -33,8 +33,11 @@ lcl(){
 
 alias creds='n ~/.aws/credentials'
 alias vrc='n ~/.config/nvim/init.vim'
+alias dfs='~/dotfiles'
 
 export PATH="$PATH:$HOME/.yarn/bin"
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+export PATH="$PATH:$HOME/Library/Android/sdk"
 
 # cd /mnt/c/projects
 
@@ -43,7 +46,7 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore-dir .git --ignore-dir node_modules --ignore-dir .serverless -p ~/.gitignore -g "" --ignore package-lock.json'
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore-dir .git --ignore-dir node_modules --ignore-dir .serverless --ignore-dir android -p ~/.gitignore -g "" --ignore package-lock.json'
 
 # git alias'
 alias git-pretty='git log --all --graph --decorate --oneline --simplify-by-decoration'
@@ -89,3 +92,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+
