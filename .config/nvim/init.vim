@@ -12,6 +12,7 @@ Plug 'flrnprz/candid.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'chriskempson/base16-vim'
 Plug 'kyoz/purify', { 'rtp': 'vim' }
+Plug 'mhartington/oceanic-next'
 
 " javascript
 " Plug 'othree/yajs.vim'
@@ -63,9 +64,10 @@ set softtabstop=2
 set expandtab
 set rtp+=/usr/local/opt/fzf
 " set background=dark
-colorscheme candid
+"colorscheme candid
 "colorscheme base16-default-dark
 "colorscheme purify
+colorscheme OceanicNext
 "let g:airline_powerline_fonts=1 
 "let g:airline_statusline_ontop=1
 set signcolumn=yes
