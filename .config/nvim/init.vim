@@ -84,6 +84,10 @@ set backupcopy=yes
 set foldmethod=syntax
 autocmd Syntax * normal zR
 
+" barbar
+let bufferline.icons = 'buffer_number_with_icon'
+let bufferline.maximum_padding = 1
+
 let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint' ]
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
