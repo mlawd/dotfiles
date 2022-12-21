@@ -1,21 +1,10 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": [
-    "scss",
-    "css",
-    "markdown",
-    "typescript",
-    "vue",
-    "json",
-    "markdown.pandoc",
-    "svelte",
-    "typescriptreact"
-  ],
+  "coc.preferences.formatOnSaveFiletypes": ["scss", "css", "markdown", "typescript", "vue", "json", "svelte", "typescriptreact"],
   "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "⚠",
   "diagnostic.infoSign": "•",
   "prettier.disableLanguages": [],
   "prettier.arrowParens": "avoid",
   "prettier.semi": true,
-  "vetur.useWorkspaceDependencies": true,
   "svelte.enable-ts-plugin": true
 }

@@ -36,8 +36,6 @@ Plug 'SpaceVim/vim-swig'
 
 " markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install'  }
-"Plug 'vim-pandoc/vim-pandoc-syntax'
-"Plug 'vim-pandoc/vim-pandoc'
 
 " editor
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } "installs the binary
@@ -45,9 +43,11 @@ Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-fugitive'
 Plug 'akinsho/toggleterm.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-tree/nvim-web-devicons'
 Plug 'kdheepak/lazygit.nvim'
 Plug 'romgrk/barbar.nvim'
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -76,7 +76,6 @@ set autoread " reload files on disk change
 set completeopt=longest,menuone
 set cmdheight=2
 set backupcopy=yes
-
 set foldmethod=syntax
 autocmd Syntax * normal zR
 
@@ -85,11 +84,6 @@ let bufferline = get(g:, 'bufferline', {})
 let bufferline.maximum_padding = 1
 
 let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint' ]
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-let g:coc_filetype_map = {
-                  \ 'markdown.pandoc': 'markdown',
-                  \ }
 
 augroup GENERIC
 	autocmd!
@@ -97,9 +91,6 @@ augroup GENERIC
 	tnoremap <ESC>		<C-\><C-n>
 	map <c-v><c-r>		:vertical resize 
 	map <c-s><c-g>		:Ag 
-	map <c-g><c-s>		:Git<cr>
-	map <c-g><c-p>		:Git push<cr>
-	map <c-g><c-f>		:! git push --force-with-lease<cr>
 	map <c-s><c-r>		:%s/
 	map <c-h>					:noh<cr>
 	map <c-x>					:Explore<cr>
@@ -112,16 +103,14 @@ nmap <leader>cf  <Plug>(coc-fix-current)
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
-nmap <silent> <C-space> <Plug>(coc-codeaction-line)
+nmap <silent> <A-space> <Plug>(coc-codeaction-line)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 nmap <silent> gtd <Plug>(coc-type-definition)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> cr <Plug>(coc-rename)
 
-"nnoremap <silent> <c-]> :bnext<CR>
-"nnoremap <silent> <c-[> :bprevious<CR>
-"nnoremap <silent> <c-c> :bdelete<CR>
+nnoremap <silent> <A-h> <Cmd>NERDTreeToggle<CR>
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
