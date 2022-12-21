@@ -63,10 +63,6 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 set rtp+=/usr/local/opt/fzf
-" set background=dark
-"colorscheme candid
-"colorscheme base16-default-dark
-"colorscheme purify
 colorscheme OceanicNext
 "let g:airline_powerline_fonts=1 
 "let g:airline_statusline_ontop=1
@@ -85,7 +81,7 @@ set foldmethod=syntax
 autocmd Syntax * normal zR
 
 " barbar
-let bufferline.icons = 'buffer_number_with_icon'
+let bufferline = get(g:, 'bufferline', {})
 let bufferline.maximum_padding = 1
 
 let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint' ]
@@ -123,9 +119,9 @@ nmap <silent> gtd <Plug>(coc-type-definition)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> cr <Plug>(coc-rename)
 
-nnoremap <silent> <c-]> :bnext<CR>
-nnoremap <silent> <c-[> :bprevious<CR>
-nnoremap <silent> <c-c> :bdelete<CR>
+"nnoremap <silent> <c-]> :bnext<CR>
+"nnoremap <silent> <c-[> :bprevious<CR>
+"nnoremap <silent> <c-c> :bdelete<CR>
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
@@ -144,6 +140,28 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+" Move to previous/next
+nnoremap <silent>    <A-,> <Cmd>BufferPrevious<CR>
+nnoremap <silent>    <A-.> <Cmd>BufferNext<CR>
+" Re-order to previous/next
+nnoremap <silent>    <A-<> <Cmd>BufferMovePrevious<CR>
+nnoremap <silent>    <A->> <Cmd>BufferMoveNext<CR>
+" Goto buffer in position...
+nnoremap <silent>    <A-1> <Cmd>BufferGoto 1<CR>
+nnoremap <silent>    <A-2> <Cmd>BufferGoto 2<CR>
+nnoremap <silent>    <A-3> <Cmd>BufferGoto 3<CR>
+nnoremap <silent>    <A-4> <Cmd>BufferGoto 4<CR>
+nnoremap <silent>    <A-5> <Cmd>BufferGoto 5<CR>
+nnoremap <silent>    <A-6> <Cmd>BufferGoto 6<CR>
+nnoremap <silent>    <A-7> <Cmd>BufferGoto 7<CR>
+nnoremap <silent>    <A-8> <Cmd>BufferGoto 8<CR>
+nnoremap <silent>    <A-9> <Cmd>BufferGoto 9<CR>
+nnoremap <silent>    <A-0> <Cmd>BufferLast<CR>
+" Pin/unpin buffer
+nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
+" Close buffer
+nnoremap <silent>    <A-c> <Cmd>BufferClose<CR>
 
 augroup mygroup
   autocmd!
