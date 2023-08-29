@@ -13,6 +13,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'chriskempson/base16-vim'
 Plug 'kyoz/purify', { 'rtp': 'vim' }
 Plug 'mhartington/oceanic-next'
+Plug 'Mofiqul/vscode.nvim'
 
 " javascript
 " Plug 'othree/yajs.vim'
@@ -22,7 +23,6 @@ Plug 'HerringtonDarkholme/yats.vim'
 Plug 'jparise/vim-graphql'
 
 " css
-Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
 
 " svelte
@@ -63,12 +63,13 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 set rtp+=/usr/local/opt/fzf
-colorscheme OceanicNext
+colorscheme vscode
 "let g:airline_powerline_fonts=1 
 "let g:airline_statusline_ontop=1
 let g:airline_theme='oceanicnext'
 let g:airline#extensions#tabline#enabled = 1
 
+"set background=light
 set signcolumn=yes
 set clipboard=unnamedplus " yank and pase with system clipboard
 set noshowmode " hide default command bar at bottomn
@@ -80,10 +81,22 @@ set foldmethod=syntax
 autocmd Syntax * normal zR
 
 " barbar
-let bufferline = get(g:, 'bufferline', {})
-let bufferline.maximum_padding = 1
+"let bufferline = get(g:, 'bufferline', {})
+"let bufferline.maximum_padding = 1
 
-let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint' ]
+lua << EOF
+require'barbar'.setup {
+  auto_hide = true,
+  clickable = false,
+  icons = {current = {filetype = {enabled = false}}},
+  maximum_padding = math.huge,
+}
+EOF
+
+let g:coc_global_extensions=[ 'coc-tsserver', '@yaegassy/coc-volar', 'coc-prettier', 'coc-css', 'coc-json', 'coc-svelte', 'coc-sh', 'coc-yaml', 'coc-eslint', 'coc-stylelint' ]
+
+command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument
+"autocmd FileType typescript,scss,css,markdown,vue,svelte,json autocmd BufWritePre * call CocAction('format')
 
 augroup GENERIC
 	autocmd!
@@ -155,7 +168,7 @@ nnoremap <silent>    <A-c> <Cmd>BufferClose<CR>
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end

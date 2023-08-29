@@ -57,13 +57,32 @@ gbc() {
   git branch -D $(git branch | fzf -m)
 }
 
-git-conflict() {
-  FILE=$(git status --porcelain | grep ^UU | fzf)
-  echo ${FILE:3}
+gcon() {
+  FULL_FILE=$(git status -s | fzf)
+
+  if [[ -n "$FULL_FILE" ]]; then
+    FILE=${FULL_FILE:3}
+
+    if [[ -n "$FILE" ]]; then
+      n "$FILE"
+
+      echo "Do you wish to commit? [y/N]"
+
+      read COMMIT
+
+      if [[ "$COMMIT" == "y" ]]; then
+        git add "$FILE"
+      fi
+    fi
+  fi
+
+
+  # n ${FILE:3}
 }
 
 g-forget() {
   git rm -r --cached .
+  git add .
 }
 
 # mkdir & cd
@@ -92,5 +111,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
-
 

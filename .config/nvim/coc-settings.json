@@ -1,10 +1,22 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["scss", "css", "markdown", "typescript", "vue", "json", "svelte", "typescriptreact"],
   "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "⚠",
   "diagnostic.infoSign": "•",
-  "prettier.disableLanguages": [],
+  "prettier.enable": true,
+  "coc.preferences.formatOnSave": true,
   "prettier.arrowParens": "avoid",
   "prettier.semi": true,
-  "svelte.enable-ts-plugin": true
+  "svelte.enable-ts-plugin": true,
+  "volar.disableDiagnostics": true,
+  "volar.takeOverMode.enabled": true,
+  "eslint.autoFixOnSave": true,
+  "languageserver": {
+    "terraform": {
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": ["terraform", "tf"],
+      "initializationOptions": {},
+      "settings": {}
+    }
+  }
 }
