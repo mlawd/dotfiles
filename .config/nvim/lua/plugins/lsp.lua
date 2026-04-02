@@ -13,7 +13,7 @@ return {
       ensure_installed = {
         "gopls",
         "ts_ls",
-        "volar",
+        "vue_ls",
         "svelte",
         "lua_ls",
       },
@@ -85,7 +85,7 @@ return {
       })
 
       -- Enable all servers (default configs provided by nvim-lspconfig)
-      vim.lsp.enable({ "gopls", "ts_ls", "volar", "svelte", "lua_ls" })
+      vim.lsp.enable({ "gopls", "ts_ls", "vue_ls", "svelte", "lua_ls" })
     end,
   },
 }

@@ -7,3 +7,7 @@ stow -t ~ .
 ```bash
 stow -t ~/.config/nvim nvim
 ```
+
+```bash
+stow -t ~/.config/opencode agents
+```
