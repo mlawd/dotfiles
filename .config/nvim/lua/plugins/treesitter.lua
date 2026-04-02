@@ -1,7 +1,17 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  lazy = false,
   build = ":TSUpdate",
-  event = { "BufReadPre", "BufNewFile" },
+  config = function(_, opts)
+    require("nvim-treesitter").setup(opts)
+
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("treesitter-start", { clear = true }),
+      callback = function(event)
+        pcall(vim.treesitter.start, event.buf)
+      end,
+    })
+  end,
   opts = {
     ensure_installed = {
       "go",

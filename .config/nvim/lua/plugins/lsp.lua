@@ -30,6 +30,12 @@ return {
       "saghen/blink.cmp",
     },
     config = function()
+      vim.diagnostic.config({
+        float = { source = "if_many" },
+        severity_sort = true,
+        virtual_text = { source = "if_many" },
+      })
+
       -- Keymaps applied when an LSP server attaches to a buffer
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
