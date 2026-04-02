@@ -131,6 +131,11 @@ gwtd() {
 }
 
 st() {
+  if [[ $# -eq 0 ]]; then
+    echo "usage: st <branch-name>" >&2
+    return 1
+  fi
+
   wt=".wt/$1"
 
   echo $wt
