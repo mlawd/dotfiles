@@ -14,6 +14,8 @@ permission:
     "git diff*": allow
     "git log*": allow
     "git status*": allow
+    "git add*": allow
+    "git commit*": allow
   task:
     "*": deny
     "orchestrator-*": allow
@@ -100,8 +102,19 @@ containing:
 - The codebase findings from Phase 1c
 - The project conventions from Phase 1b
 - The available scripts (test, lint, build, format)
+- An instruction to produce:
+  - The full stack plan
+  - A compact global context summary
+  - An implementation packet for each phase
+- An instruction to use:
+  - `full` packet fidelity for Phase 1
+  - `light` packet fidelity for later phases unless stable enough for
+    a full packet
+  - `Refresh after previous phase: yes` where later phases may need to
+    adapt to earlier implementation details
 
-The planner will return a structured implementation plan.
+The planner will return a structured implementation plan with
+implementation packets.
 
 ### 2b. Review the plan
 
@@ -126,6 +139,10 @@ Show the approved plan to the user:
 > 1. `feat/{ticketId}/1-{desc}` — {summary}
 > 2. `feat/{ticketId}/2-{desc}` — {summary}
 >    ...
+>
+> Include, for each phase, whether its implementation packet is `full`
+> or `light`, so the user can judge whether later phases are being
+> over-specified.
 >
 > Does this look good? I'll start implementing once you approve.
 > Feel free to adjust the scope, ordering, or number of stages.
@@ -159,9 +176,17 @@ prompt that includes:
 
 - The phase description, files to create/modify, and tests to add
 - The project conventions from Phase 1b
+- The planner's global context summary
+- The phase's implementation packet copied verbatim
 - The verification commands to run (test, lint, build, format)
 - Instruction to fix any failures before reporting back
 - Instruction to NOT run any git/gt commands
+- Instruction to avoid broad repo exploration and treat the
+  implementation packet as the source of truth
+
+Store the returned `task_id`. Reuse it for any follow-up fix cycles in
+step 3e so the implementer retains local context from the initial
+implementation.
 
 ### 3c. Amend the branch
 
@@ -184,10 +209,16 @@ Launch `orchestrator-reviewer` via the Task tool with:
 If the reviewer returns **REQUEST_CHANGES** with CRITICAL or WARNING
 findings:
 
-1. Launch `orchestrator-implementer` with the review findings and
-   instructions to fix the specific issues
-2. After fixes, amend the branch: `gt modify --all --no-interactive`
-3. Re-launch `orchestrator-reviewer` (step 3d)
+1. Re-launch `orchestrator-implementer` using the existing `task_id`
+   from step 3b
+2. Provide:
+   - The review findings
+   - An instruction to keep using the existing implementation packet
+     and prior task context
+   - An instruction to fix only the reported issues unless a minimal
+     adjacent change is required
+3. After fixes, amend the branch: `gt modify --all --no-interactive`
+4. Re-launch `orchestrator-reviewer` (step 3d)
 
 **Cap at 3 review cycles.** If new CRITICAL issues keep appearing,
 stop and escalate to the user with full context.

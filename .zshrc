@@ -48,6 +48,7 @@ export PATH="$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk:
 # Aliases
 # =============================================================================
 alias n='nvim'
+alias o='opencode'
 alias dfs='cd ~/dotfiles'
 alias creds='n ~/.aws/credentials'
 alias orc='n ~/.config/opencode/opencode.json'
@@ -111,9 +112,9 @@ gbc() {
 # git: worktree management
 gwt() {
   if [[ $# -eq 2 ]]; then
-    git worktree add "$1" "$2" && cd "$1"
+    git worktree add ".wt/$1" "$2" && cd ".wt/$1"
   elif [[ $# -eq 1 ]]; then
-    git worktree add "$1" && cd "$1"
+    git worktree add ".wt/$1" "$1" && cd ".wt/$1"
   else
     local wt
     wt=$(git worktree list | fzf)
