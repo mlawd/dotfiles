@@ -35,7 +35,6 @@ changes, verification, and code review to these sub-agents:
 | ---------------------------- | ---------------------------------- |
 | `explore`                      | Codebase discovery and exploration |
 | `orchestrator-planner`         | Creates implementation plans       |
-| `orchestrator-plan-reviewer`   | Reviews plans before execution     |
 | `orchestrator-implementer`     | Implements a single phase/PR       |
 | `orchestrator-reviewer`        | Reviews code changes on a branch   |
 
@@ -114,21 +113,11 @@ containing:
     adapt to earlier implementation details
 
 The planner will return a structured implementation plan with
-implementation packets.
+implementation packets. The planner includes a self-review checklist
+that validates independent deployability, ordering, scoping, and
+completeness before returning the plan.
 
-### 2b. Review the plan
-
-Launch `orchestrator-plan-reviewer` via the Task tool with:
-
-- The proposed plan from step 2a
-- The original requirements/acceptance criteria
-
-If the reviewer returns **REVISE**, incorporate the feedback and
-re-launch `orchestrator-planner` with the review findings included.
-Cap at 2 planning cycles. If the plan is still not approved, present
-both the plan and the reviewer's concerns to the user for guidance.
-
-### 2c. Present for approval
+### 2b. Present for approval
 
 Show the approved plan to the user:
 
@@ -161,13 +150,22 @@ gt sync --no-interactive
 
 For each phase in the approved plan:
 
-### 3a. Create the branch
+### 3a. Refresh packet (if needed)
 
-Create the stacked branch with an initial commit:
+If the current phase's implementation packet has
+`Refresh after previous phase: yes`:
 
-```
-gt create {branch-name} -m "{commit message}" --no-interactive
-```
+1. Launch `explore` to inspect the files created or modified in the
+   previous phase
+2. Re-launch `orchestrator-planner` with:
+   - The original plan
+   - The previous phase's implementation report
+   - The exploration findings
+   - An instruction to update **only this phase's** implementation
+     packet — do not restructure the plan
+3. Replace the light packet with the refreshed version
+
+Skip this step for Phase 1 or if `Refresh after previous phase: no`.
 
 ### 3b. Delegate implementation
 
@@ -188,13 +186,17 @@ Store the returned `task_id`. Reuse it for any follow-up fix cycles in
 step 3e so the implementer retains local context from the initial
 implementation.
 
-### 3c. Amend the branch
+### 3c. Create the branch
 
-After the implementer completes, stage and amend all changes:
+After the implementer completes, stage all changes and create the
+stacked branch:
 
 ```
-gt modify --all --no-interactive
+git add -A && gt create {branch-name} -m "{commit message}" --no-interactive
 ```
+
+This creates the branch and commits the actual implementation in one
+step — no empty commit or subsequent amend needed.
 
 ### 3d. Delegate code review
 
@@ -217,7 +219,8 @@ findings:
      and prior task context
    - An instruction to fix only the reported issues unless a minimal
      adjacent change is required
-3. After fixes, amend the branch: `gt modify --all --no-interactive`
+3. After fixes, amend the branch:
+   `gt modify --all --no-interactive`
 4. Re-launch `orchestrator-reviewer` (step 3d)
 
 **Cap at 3 review cycles.** If new CRITICAL issues keep appearing,
@@ -251,7 +254,14 @@ For the final phase, replace the last line with:
 All phases implemented. Proceeding to final submission...
 ```
 
-### 3h. Continue to next phase
+### 3h. Context management
+
+After a phase is submitted, retain only the branch name, PR URL, and
+a one-line summary for the completion report. Discard full
+implementation and review reports from completed phases to preserve
+context window.
+
+### 3i. Continue to next phase
 
 Move to the next phase and repeat from step 3a.
 

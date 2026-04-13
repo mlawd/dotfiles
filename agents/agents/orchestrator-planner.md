@@ -148,3 +148,19 @@ Return the plan in this exact structure:
 - **Edit recipe** must be concrete enough that an implementation model
   can act without broad repo exploration.
 - **Non-goals** should prevent scope creep and unnecessary edits.
+
+## Self-review checklist
+
+Before returning the plan, validate it against these checks. If any
+fail, revise the plan before outputting it.
+
+- [ ] Each phase is independently deployable — no phase imports or
+      references code introduced in a later phase
+- [ ] Ordering follows: infrastructure/types → core logic →
+      integration → consumer-facing changes
+- [ ] No phase touches more than ~10 files
+- [ ] All acceptance criteria from the requirements are addressed
+- [ ] Verification commands are specific to each phase (not just
+      "run all tests")
+- [ ] Branch names follow the naming convention
+- [ ] Summaries are clear enough to serve as PR titles
