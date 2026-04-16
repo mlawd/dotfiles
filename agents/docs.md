@@ -60,7 +60,7 @@ sequenceDiagram
         o ->> u: Ask question
         u ->> o: Provide answer
     end
-    o ->> p: Context + requirements
+    o ->> p: Context + requirements, vertical-slice preference
     p ->> o: Structured plan
     o ->> r: Plan + requirements
     r ->> o: APPROVE or REVISE

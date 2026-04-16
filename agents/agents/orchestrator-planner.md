@@ -39,8 +39,10 @@ You will receive:
   tests when merged without its children
 - **Small and reviewable** — aim for PRs that touch fewer than ~10
   files and can be reviewed in under 15 minutes
-- **Logical ordering** — infrastructure/types first, then core logic,
-  then integration, then consumer-facing changes
+- **Vertical slices preferred** — strongly prefer small end-to-end PRs
+  that deliver a working increment through the relevant layers. Use
+  horizontal slices only when a shared foundation, migration, or risk
+  reduction step is clearly the better option
 - **Tests included** — each PR includes tests for the code it
   introduces
 - **No forward references** — a PR must not import or reference code
@@ -131,6 +133,10 @@ Return the plan in this exact structure:
   specify them.
 - Do not include phases for "setup" or "cleanup" unless they involve
   real code changes.
+- Prefer vertical, working slices over layer-by-layer slices whenever
+  the problem can be delivered that way.
+- If a phase is mostly horizontal, explain why a vertical slice would
+  be lower value or higher risk.
 - Be concrete about file paths — use the actual paths from the
   codebase findings, not placeholders.
 - Produce an **Implementation packet** for every phase.
@@ -156,8 +162,9 @@ fail, revise the plan before outputting it.
 
 - [ ] Each phase is independently deployable — no phase imports or
       references code introduced in a later phase
-- [ ] Ordering follows: infrastructure/types → core logic →
-      integration → consumer-facing changes
+- [ ] The plan prefers vertical, end-to-end slices wherever feasible
+- [ ] Any horizontal phase is explicitly justified as necessary for
+      shared foundation, migration, or risk reduction
 - [ ] No phase touches more than ~10 files
 - [ ] All acceptance criteria from the requirements are addressed
 - [ ] Verification commands are specific to each phase (not just

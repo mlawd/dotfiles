@@ -111,10 +111,13 @@ containing:
     a full packet
   - `Refresh after previous phase: yes` where later phases may need to
     adapt to earlier implementation details
+- An instruction to strongly prefer vertical, end-to-end PR slices
+  over horizontal layer-by-layer phases unless a horizontal slice is
+  clearly the better tradeoff
 
 The planner will return a structured implementation plan with
 implementation packets. The planner includes a self-review checklist
-that validates independent deployability, ordering, scoping, and
+that validates independent deployability, slice shape, scoping, and
 completeness before returning the plan.
 
 ### 2b. Present for approval
