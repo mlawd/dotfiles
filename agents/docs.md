@@ -16,7 +16,7 @@ orchestrator (primary)
   +-- per phase in Phase 3:
       |-- orchestrator-implementer (implement + verify)
       |-- orchestrator-reviewer    (code review)
-      +-- orchestrator-implementer (fix if needed, max 3 cycles)
+      +-- orchestrator-implementer (fix if needed; reuse or refresh, max 3 cycles)
 ```
 
 ## Agents
@@ -104,6 +104,7 @@ sequenceDiagram
         r ->> o: APPROVE or REQUEST_CHANGES
 
         loop REQUEST_CHANGES (max 3 cycles)
+            o ->> o: Decide reuse vs fresh implementer
             o ->> i: Review findings to fix
             i ->> i: Fix + verify
             i ->> o: Fix report

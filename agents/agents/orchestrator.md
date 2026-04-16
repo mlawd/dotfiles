@@ -185,9 +185,21 @@ prompt that includes:
 - Instruction to avoid broad repo exploration and treat the
   implementation packet as the source of truth
 
-Store the returned `task_id`. Reuse it for any follow-up fix cycles in
-step 3e so the implementer retains local context from the initial
-implementation.
+Store the returned `task_id`. Reuse it for follow-up fix cycles in
+step 3e only while the retained context is still helpful.
+
+Start a fresh `orchestrator-implementer` task instead of reusing the
+existing `task_id` when any of the following is true:
+
+- Estimated context usage is above ~10-15%
+- The phase has already gone through 2 or more fix rounds
+- The latest review feedback materially changes the implementation
+  approach
+- The prior task contains substantial stale logs, failed attempts, or
+  discarded directions
+
+When starting fresh, provide a compact handoff that captures only the
+current branch state and the latest actionable context.
 
 ### 3c. Create the branch
 
@@ -214,17 +226,32 @@ Launch `orchestrator-reviewer` via the Task tool with:
 If the reviewer returns **REQUEST_CHANGES** with CRITICAL or WARNING
 findings:
 
-1. Re-launch `orchestrator-implementer` using the existing `task_id`
-   from step 3b
-2. Provide:
-   - The review findings
-   - An instruction to keep using the existing implementation packet
-     and prior task context
+1. Decide whether to reuse the existing `orchestrator-implementer`
+   `task_id` or start a fresh implementer task.
+2. Reuse the existing `task_id` only if:
+   - The retained context is still compact and relevant
+   - The requested fixes are local follow-ups to the current approach
+3. Start a fresh implementer task if:
+   - Estimated context usage is above ~10-15%
+   - The phase has already gone through 2 or more fix rounds
+   - The reviewer requests a material change in approach
+   - The previous implementer task has accumulated noisy or stale
+     context
+4. In either case, provide:
+   - The latest review findings
+   - The current phase description
+   - The current implementation packet
    - An instruction to fix only the reported issues unless a minimal
      adjacent change is required
-3. After fixes, amend the branch:
+5. If starting fresh, also provide a compact handoff containing:
+   - Files already changed in this phase
+   - A brief summary of what has already been implemented
+   - The latest verification commands and results
+   - An instruction to work from the current branch state rather than
+     prior reasoning history
+6. After fixes, amend the branch:
    `gt modify --all --no-interactive`
-4. Re-launch `orchestrator-reviewer` (step 3d)
+7. Re-launch `orchestrator-reviewer` (step 3d)
 
 **Cap at 3 review cycles.** If new CRITICAL issues keep appearing,
 stop and escalate to the user with full context.
