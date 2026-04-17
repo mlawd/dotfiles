@@ -298,7 +298,7 @@ findings:
    `gt modify --all --no-interactive`
 7. Re-launch `orchestrator-reviewer` (step 3d)
 
-**Cap at 3 review cycles.** If new CRITICAL issues keep appearing,
+**Cap at 2 review cycles.** If new CRITICAL issues keep appearing,
 stop and escalate to the user with full context.
 
 ### 3f. Submit the branch
