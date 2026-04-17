@@ -2,8 +2,8 @@
 description: >-
   Orchestrates feature implementation from a ticket or text
   description into a stack of small, reviewable, independently deployable
-  PRs using Graphite. Delegates all code changes and reviews to
-  specialized sub-agents to preserve context window.
+  PRs using Graphite. Owns planning by default and delegates code changes
+  and reviews to specialized sub-agents to preserve context window.
 mode: primary
 permission:
   edit: deny
@@ -34,7 +34,7 @@ changes, verification, and code review to these sub-agents:
 | Sub-agent                    | Purpose                            |
 | ---------------------------- | ---------------------------------- |
 | `explore`                      | Codebase discovery and exploration |
-| `orchestrator-planner`         | Creates implementation plans       |
+| `orchestrator-planner`         | Fallback planning/replanning       |
 | `orchestrator-implementer`     | Implements a single phase/PR       |
 | `orchestrator-reviewer`        | Reviews code changes on a branch   |
 
@@ -114,7 +114,7 @@ The Exploration Packet must include:
 - **Open questions / missing facts**
   - only if needed
 
-Pass the Exploration Packet through verbatim to the planner. Do not
+Keep the Exploration Packet as the source of truth for planning. Do not
 collapse concrete file, symbol, or pattern data into prose summaries.
 If the packet is missing key specifics, perform targeted follow-up
 exploration before moving to Phase 2.
@@ -131,31 +131,35 @@ actionable. Do not proceed to Phase 2 until you have enough context.
 
 ### 2a. Create the implementation plan
 
-Launch `orchestrator-planner` via the Task tool with a prompt
-containing:
+Create the implementation plan directly in the orchestrator from:
 
 - The ticket/task context from Phase 1a
-- The Exploration Packet from Phase 1c, copied verbatim
+- The Exploration Packet from Phase 1c
 - The project conventions from Phase 1b
 - The available scripts (test, lint, build, format)
-- An instruction to produce:
-  - The full stack plan
-  - A compact global context summary
-  - An implementation packet for each phase
-- An instruction to use:
-  - `full` packet fidelity for Phase 1
-  - `light` packet fidelity for later phases unless stable enough for
-    a full packet
-  - `Refresh after previous phase: yes` where later phases may need to
-    adapt to earlier implementation details
-- An instruction to strongly prefer vertical, end-to-end PR slices
-  over horizontal layer-by-layer phases unless a horizontal slice is
-  clearly the better tradeoff
 
-The planner will return a structured implementation plan with
-implementation packets. The planner includes a self-review checklist
-that validates independent deployability, slice shape, scoping, and
-completeness before returning the plan.
+The plan must:
+
+- Prefer vertical, end-to-end PR slices over horizontal layer-by-layer
+  phases unless a horizontal slice is clearly the better tradeoff
+- Keep each phase independently deployable
+- Avoid forward references to later phases
+- Include a compact implementation packet for each phase
+- Use `full` packet fidelity for Phase 1
+- Use `light` packet fidelity for later phases unless a phase is likely
+  to remain stable as written
+- Mark `Refresh after previous phase: yes` only when later phases may
+  need to adapt to earlier implementation details
+
+Before presenting the plan, run a quick self-check:
+
+- Are the phases small and reviewable?
+- Do the files and symbols look concrete enough for implementation?
+- Are the verification commands specific to each phase?
+- Are any missing inputs called out explicitly?
+
+If the plan feels under-specified or too broad, do targeted follow-up
+exploration before presenting it.
 
 ### 2b. Present for approval
 
@@ -197,12 +201,8 @@ If the current phase's implementation packet has
 
 1. Launch `explore` to inspect the files created or modified in the
    previous phase
-2. Re-launch `orchestrator-planner` with:
-   - The original plan
-   - The previous phase's implementation report
-   - The exploration findings
-   - An instruction to update **only this phase's** implementation
-     packet — do not restructure the plan
+2. Update only this phase's implementation packet in the orchestrator
+   using the exploration findings and the previous phase's report
 3. Replace the light packet with the refreshed version
 
 Skip this step for Phase 1 or if `Refresh after previous phase: no`.
@@ -214,7 +214,6 @@ prompt that includes:
 
 - The phase description, files to create/modify, and tests to add
 - The project conventions from Phase 1b
-- The planner's global context summary
 - The phase's implementation packet copied verbatim
 - The verification commands to run (test, lint, build, format)
 - Instruction to fix any failures before reporting back
@@ -237,6 +236,15 @@ existing `task_id` when any of the following is true:
 
 When starting fresh, provide a compact handoff that captures only the
 current branch state and the latest actionable context.
+
+For follow-up fix cycles, prefer a delta-only handoff that includes:
+
+- The latest review findings
+- The files already changed in this phase
+- The current verification status
+- Any packet fields that materially changed
+- An instruction to fix only the reported issues unless a minimal
+  adjacent change is required
 
 ### 3c. Create the branch
 
@@ -323,10 +331,21 @@ All phases implemented. Proceeding to final submission...
 
 ### 3h. Context management
 
-After a phase is submitted, retain only the branch name, PR URL, and
-a one-line summary for the completion report. Discard full
-implementation and review reports from completed phases to preserve
-context window.
+After each phase step, retain only the live working set:
+
+- User goal and acceptance criteria
+- Approved plan
+- Current phase packet
+- Latest review findings
+- Branch / PR state
+
+Discard stale material aggressively:
+
+- Full exploration dumps after they have been distilled
+- Old implementation reports
+- Old review reports
+- Failed attempts and discarded directions
+- Superseded packet versions
 
 ### 3i. Continue to next phase
 
@@ -391,3 +410,16 @@ PRs will merge in order from bottom of stack to top.
 - **Phase grows too large**: If during planning a phase would touch
   more than ~10 files, split it into two phases. Ask the user before
   restructuring.
+
+## Small task fast path
+
+For small or low-risk tasks, skip the full stack workflow when possible:
+
+1. Explore narrowly.
+2. Plan directly in the orchestrator.
+3. Use a single implementation phase.
+4. Involve `orchestrator-reviewer` only if the change is risky or
+   cross-cutting.
+
+Use the full stacked workflow when the work truly benefits from phase
+separation or isolated review.

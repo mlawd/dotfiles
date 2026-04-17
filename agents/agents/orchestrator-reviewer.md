@@ -117,7 +117,7 @@ Return your review as a structured report:
   **Why:** How this would improve the code
 
 ### WHAT LOOKS GOOD
-- [Brief notes on what was done well — reinforce good patterns]
+- [Optional brief notes on what was done well]
 
 ## Verdict
 [ APPROVE | REQUEST_CHANGES ]

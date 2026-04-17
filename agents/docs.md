@@ -2,21 +2,20 @@
 
 ## Overview
 
-The orchestrator delegates all work to specialized sub-agents via flat
-delegation — the orchestrator is always the caller, sub-agents return
-results to it, and it manages flow control, branch operations, and
-user communication.
+The orchestrator owns the live working state. It handles discovery,
+planning, flow control, branch operations, and user communication, and
+delegates narrow execution and review tasks to specialized sub-agents.
 
 ```
 orchestrator (primary)
   |-- explore                      (Phase 1: codebase discovery)
-  |-- orchestrator-planner         (Phase 2: create plan)
-  |-- orchestrator-plan-reviewer   (Phase 2: review plan)
   |
   +-- per phase in Phase 3:
       |-- orchestrator-implementer (implement + verify)
       |-- orchestrator-reviewer    (code review)
       +-- orchestrator-implementer (fix if needed; reuse or refresh, max 3 cycles)
+  |
+  +-- orchestrator-planner         (fallback planning/replanning)
 ```
 
 ## Agents
@@ -24,8 +23,7 @@ orchestrator (primary)
 | Agent                        | Mode             | Permissions                        | Purpose                                           |
 | ---------------------------- | ---------------- | ---------------------------------- | ------------------------------------------------- |
 | `orchestrator`               | primary          | no edit/write, bash: gt/git only   | Coordinates the full flow across all phases        |
-| `orchestrator-planner`       | subagent, hidden | read-only, bash: git log only      | Produces structured implementation plans           |
-| `orchestrator-plan-reviewer` | subagent, hidden | read-only, no bash                 | Reviews plans for feasibility and scoping          |
+| `orchestrator-planner`       | subagent, hidden | read-only, bash: git log only      | Fallback planning/replanning for complex tasks     |
 | `orchestrator-implementer`   | subagent, hidden | full access (edit, write, bash)    | Implements a single phase/PR and runs verification |
 | `orchestrator-reviewer`      | subagent, hidden | read-only, bash: git diff/log/show | Reviews code changes, produces structured report   |
 
@@ -40,8 +38,9 @@ orchestrator (primary)
 ## Planning
 
 The orchestrator converts exploration results into a structured
-Exploration Packet and passes it verbatim to the planner. The planner
-should ask for missing inputs rather than re-exploring broadly.
+Exploration Packet and uses it to produce the implementation plan
+directly. If a task is unusually large or noisy, the orchestrator may
+delegate a fallback planning pass to `orchestrator-planner`.
 
 ```mermaid
 ---
@@ -53,7 +52,6 @@ sequenceDiagram
     participant o as Orchestrator
     participant e as explore
     participant p as orchestrator-planner
-    participant r as orchestrator-plan-reviewer
 
     u ->> o: Explains what to build
     o ->> o: Fetch ticket (if ID provided)
@@ -64,16 +62,11 @@ sequenceDiagram
         o ->> u: Ask question
         u ->> o: Provide answer
     end
-    o ->> p: Context + Exploration Packet + requirements
-    p ->> o: Structured plan
-    o ->> r: Plan + requirements
-    r ->> o: APPROVE or REVISE
-    opt REVISE (max 2 cycles)
-        o ->> p: Plan + review feedback
-        p ->> o: Revised plan
-        o ->> r: Revised plan
-        r ->> o: APPROVE or REVISE
+    opt fallback planning needed
+        o ->> p: Context + Exploration Packet + requirements
+        p ->> o: Structured plan
     end
+    o ->> o: Produce plan directly when possible
     o ->> u: Proposed plan
     loop has alterations
         u ->> o: Sends alterations
@@ -125,3 +118,9 @@ sequenceDiagram
     o ->> o: Link PRs to Shortcut
     o ->> u: Final summary (all PR links)
 ```
+
+## Handoff Rules
+
+- Use a full packet once, then prefer delta handoffs for fix cycles.
+- Keep the orchestrator's working context compact.
+- Treat immutable phase artifacts as snapshots, not shared scratchpads.
