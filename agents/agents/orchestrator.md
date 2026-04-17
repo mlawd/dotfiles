@@ -74,13 +74,50 @@ that don't exist):
 
 ### 1c. Explore the codebase
 
-Launch `explore` sub-agent(s) via the Task tool to understand the
-areas of code affected by this ticket. Focus on:
+Launch a small number of narrow `explore` sub-agent(s) via the Task
+tool to understand the areas of code affected by this ticket. Focus on:
 
 - Relevant source files, types, and interfaces
 - Existing test patterns and test utilities
 - Module structure and import conventions
 - Similar past implementations that can be used as reference
+
+Normalize the findings into a single structured **Exploration Packet**
+before planning. Prefer 2-4 targeted explorations over one broad scan.
+
+The Exploration Packet must include:
+
+- **Scope searched**
+  - areas inspected
+  - search intent
+  - confidence
+- **Relevant files**
+  - path
+  - role
+  - why it matters
+- **Relevant symbols**
+  - symbol name
+  - file
+  - purpose / impact
+- **Reference patterns**
+  - file path
+  - pattern to copy
+- **Constraints and conventions observed**
+  - import style
+  - file naming
+  - testing pattern
+  - data flow notes
+- **Likely edit surface**
+  - must change
+  - may change
+  - probably should not change
+- **Open questions / missing facts**
+  - only if needed
+
+Pass the Exploration Packet through verbatim to the planner. Do not
+collapse concrete file, symbol, or pattern data into prose summaries.
+If the packet is missing key specifics, perform targeted follow-up
+exploration before moving to Phase 2.
 
 ### 1d. Clarify with the user
 
@@ -98,7 +135,7 @@ Launch `orchestrator-planner` via the Task tool with a prompt
 containing:
 
 - The ticket/task context from Phase 1a
-- The codebase findings from Phase 1c
+- The Exploration Packet from Phase 1c, copied verbatim
 - The project conventions from Phase 1b
 - The available scripts (test, lint, build, format)
 - An instruction to produce:

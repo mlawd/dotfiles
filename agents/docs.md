@@ -39,6 +39,10 @@ orchestrator (primary)
 
 ## Planning
 
+The orchestrator converts exploration results into a structured
+Exploration Packet and passes it verbatim to the planner. The planner
+should ask for missing inputs rather than re-exploring broadly.
+
 ```mermaid
 ---
 title: Planning (Phases 1-2)
@@ -60,7 +64,7 @@ sequenceDiagram
         o ->> u: Ask question
         u ->> o: Provide answer
     end
-    o ->> p: Context + requirements, vertical-slice preference
+    o ->> p: Context + Exploration Packet + requirements
     p ->> o: Structured plan
     o ->> r: Plan + requirements
     r ->> o: APPROVE or REVISE
