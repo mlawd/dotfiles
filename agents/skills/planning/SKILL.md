@@ -35,7 +35,7 @@ Prefer vertical end-to-end slices over horizontal layer-by-layer phases. Use hor
 
 ### 2. Per-phase: produce an implementation packet
 
-For Phase 1, produce a FULL packet. For later phases, default to LIGHT.
+For Phase 1, produce a FULL packet. For later phases, default to LIGHT. These full/light packets are implementation handoff artifacts and should be retained internally by default.
 
 **Full packet:**
 - Goal (one sentence)
@@ -68,7 +68,7 @@ Default to `yes` unless the phase is genuinely independent.
 
 ### 4. Present the plan in one shot
 
-After producing the plan, present it to the user with this structure:
+After producing the plan, present it to the user. By default, the user sees a concise plan; do not dump the full verbose packet contents unless requested. Use this structure:
 
 ```
 ## Implementation Plan
@@ -76,16 +76,18 @@ After producing the plan, present it to the user with this structure:
 
 ### Phase 1: {short description}
 **Branch:** feat/sc-{id}/1-{kebab-description}
-**Summary:** {one-line}
+**Value Delivered:** {what this slice provides}
+**Likely Edit Surface:** {files/modules}
+**Verification:** {how we'll know it works}
 **Packet fidelity:** full
-[full packet contents]
 
 ### Phase 2: {short description}
 **Branch:** feat/sc-{id}/2-{kebab-description}
-**Summary:** {one-line}
+**Value Delivered:** {what this slice provides}
+**Likely Edit Surface:** {files/modules}
+**Verification:** {how we'll know it works}
 **Packet fidelity:** light
 **Refresh after previous phase:** yes
-[light packet contents]
 ```
 
 Then ask one question: "Does this look good? I'll start implementing once you approve."
@@ -117,7 +119,7 @@ None of these require a new planning session — they're part of normal executio
 
 ## Hand-off
 
-Hand the plan to the workflow skill that owns execution (e.g., `orchestrating-stacked-prs`). The plan lives in conversation context; no file is created.
+Hand the plan to the workflow skill that owns execution (e.g., `orchestrating-stacked-prs`). The plan lives in conversation context; no file is created. The full implementation packet is supplied to the orchestrator/implementer even if hidden from the user-facing plan.
 
 ## When to persist
 
@@ -128,6 +130,7 @@ Only if the user explicitly asks ("save this plan," "write this to a doc"). In t
 - In-context by default; no file artifacts
 - One approval gate (after presentation)
 - Phase 1 packet at full fidelity; later phases light + refresh-on-demand
+- Packets are internal handoff artifacts; show users a concise plan summary, not raw verbose packets, unless requested
 - Packets must be verbose enough for a lighter-reasoning implementer to execute without drift
 - No forward references between phases
 - 1-5 phases; split or decompose otherwise

@@ -69,6 +69,12 @@ This separation gives:
 - **Reuse**: the same skill content backs the orchestrator's primary behaviour, subagent specializations, and ad-hoc invocations
 - **Configurability**: each agent has its own model and permission profile while sharing skill content
 
+## Context and Communication
+
+- **Internal Packets**: The orchestrator keeps detailed exploration context in internal Exploration Packets and implementation details in verbose packets. These prevent re-exploration and ensure implementer fidelity but should not be shown raw to users.
+- **Conversational Flow**: User-facing communication should be summarized, conversational, and focused on one question or decision at a time (matching the style of obra/superpowers).
+- **Persistence**: Unlike obra/superpowers which may persist context into spec/plan docs, this orchestrator primarily keeps packets as internal in-context artifacts to minimize disk noise, unless explicit persistence is requested.
+
 ## Asymmetric calibration
 
 The system intentionally runs the implementer on lighter-reasoning models (Sonnet 4.6 tier, GPT-5.4 Mini, Gemini 3.1 Flash) while the orchestrator/planner/reviewer run on stronger-reasoning models. This means:

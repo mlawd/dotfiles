@@ -42,17 +42,20 @@ Read these files from the working directory (skip any that don't exist):
 
 ### 1c. Explore the codebase
 
-Follow the `exploring` skill to produce an Exploration Packet. Dispatch the `explore` subagent for any wide-net searches; do narrow inspection inline.
+Follow the `exploring` skill to produce an Exploration Packet. Dispatch the `explore` subagent for any wide-net searches; do narrow inspection inline. Keep the Exploration Packet internally for planning and handoff; do not display it raw to the user. Summarize findings for the user only when useful.
 
 ### 1d. Establish shared intent
 
-Follow the `brainstorming` skill. Skip ceremony when intent is clear; clarify when not. Emit an intent block before moving on.
+Follow the `brainstorming` skill. Skip ceremony when intent is clear; clarify when not. If clarification is required, ask one question at a time via the `brainstorming` skill. Emit an intent block before moving on.
 
 ## Phase 2: Planning
 
 Follow the `planning` skill to produce a stacked-PR plan in-context. Present it to the user and wait for explicit approval before Phase 3.
 
-If the plan is unusually complex or the primary's context is getting tight, dispatch the `planner` subagent for a fallback planning pass instead.
+**Vertical Slicing Strategy:**
+- **Deliver Value Early:** By default, each phase MUST represent a "vertical slice" of functionality that is independently valuable and deployable.
+- **No Layer-Only PRs:** Horizontal slices (infrastructure-only, data-only, or UI-only phases) are disallowed unless explicitly requested or technically unavoidable. If used, they must be justified and still provide standalone utility.
+- **Scale:** If the plan is unusually complex or the primary's context is getting tight, dispatch the `planner` subagent for a fallback planning pass instead.
 
 ## Phase 3: Implementation (loop per phase)
 
@@ -155,6 +158,9 @@ After each phase, retain only the live working set:
 
 Discard aggressively: full exploration dumps, old implementation reports, old review reports, failed attempts, superseded packet versions.
 
+**User Communication / Context Discipline:**
+Do not display raw Exploration Packets, full implementation packets, old review reports, or other internal scaffolding unless explicitly requested or needed for error escalation. Present concise summaries and decisions to the user. Internal packets (exploration, planning, implementation) stay internal by default.
+
 ### 3i. Continue to next phase
 
 Repeat from 3a.
@@ -218,8 +224,10 @@ Use the full stacked workflow when the work truly benefits from phase separation
 
 ## Rules
 
-- Never write code directly — always dispatch
-- One approval gate at end of planning; no others during execution
-- Cap review cycles at 2 per phase
-- Context discipline: drop superseded artifacts aggressively
-- Branch and PR operations: only the orchestrator runs them
+- **Vertical Slices by Default:** Every PR in a stack must be independently valuable. No horizontal "layer" PRs (e.g., just DB, just API) without explicit justification and value.
+- **Internal Packets stay Internal:** Exploration, implementation, and planning packets are handoff artifacts and should not be shown raw to users.
+- **Never write code directly — always dispatch**
+- **One approval gate at end of planning; no others during execution**
+- **Cap review cycles at 2 per phase**
+- **Context discipline: drop superseded artifacts aggressively**
+- **Branch and PR operations: only the orchestrator runs them**

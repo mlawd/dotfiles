@@ -7,7 +7,7 @@ calibration: strong-reasoning or general-purpose models
 
 # Exploring
 
-Discover the relevant codebase context for a task. Produce a structured Exploration Packet that becomes input for planning or a refresh for in-flight packets.
+Discover the relevant codebase context for a task. Produce a structured Exploration Packet that becomes input for planning or a refresh for in-flight packets. The Exploration Packet is an internal handoff artifact; users should receive concise summaries unless they request the raw packet.
 
 ## When to invoke
 
@@ -40,7 +40,7 @@ Read enough of each candidate file to confirm relevance. Don't just collect name
 
 ### 4. Produce the Exploration Packet
 
-Normalize findings into this exact structure:
+Normalize findings into this exact structure. This internal structure is for downstream planning and implementation and should not be displayed verbatim to the user by default.
 
 ```
 ## Exploration Packet
@@ -77,6 +77,14 @@ Normalize findings into this exact structure:
 - {only if needed}
 ```
 
+### 5. Communicate findings to the user
+
+After producing the packet, summarize the findings for the user:
+- Summarize in 3-5 bullets maximum.
+- Mention likely edit surface and confidence/risk briefly.
+- Ask at most one clarification question, only if it materially affects the plan.
+- Do not list every missing fact; send the highest-impact unknown to brainstorming as the next question.
+
 ## What this skill does NOT do
 
 - Make architectural decisions (that's planning)
@@ -87,7 +95,10 @@ Exploring is observation, not judgment.
 
 ## Rules
 
-- Concrete file paths and symbol names only — no vague summaries
+- Treat Exploration Packet as internal/downstream context by default
+- Show users concise summaries, not raw packets, unless requested
+- Ask users at most one clarification question at a time
+- Keep concrete file paths/symbol names in the packet for downstream agents; no vague summaries
 - 2-4 narrow searches preferred over one wide scan
 - Confirm relevance by inspection; don't trust file names alone
 - Flag missing facts explicitly under Open questions

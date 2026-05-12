@@ -29,7 +29,9 @@ Route based on the answers:
 
 ## Clarification mode
 
-- Ask one focused question at a time
+- Ask the highest-impact question first
+- Ask one focused question at a time; never batch questions unless user explicitly asks for a questionnaire
+- Convert missing facts from exploration into prioritized questions rather than dumping an open-questions list
 - Prefer multiple choice (A/B/C/D, including "or something else")
 - Ask only what materially changes the outcome
 - Stop the moment intent and scope flip to "clear"
@@ -81,7 +83,9 @@ If the user explicitly asks for a written design document, that's a separate tas
 ## Rules
 
 - One question per message in clarification mode
+- Ask the highest-impact question first
 - Triage proportionally — trivial tasks pass the gate immediately
-- No artifacts unless explicitly requested
+- No artifacts unless explicitly requested; preserve the local behavior with no persisted artifacts by default
 - Hand off through the intent block, in-context, no file persistence
 - Section-by-section approval when designing
+- Skip ceremony when intent is clear
