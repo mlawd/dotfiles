@@ -146,6 +146,12 @@ st() {
   cd "$wt"
 }
 
+cpenv() {
+  local git_dir
+  git_dir="$(dirname "$(git rev-parse --git-common-dir)")"
+  cp "$git_dir/.env*" ./
+}
+
 # =============================================================================
 # Local overrides (machine-specific config, secrets, project aliases)
 # Loaded last so it can override anything above
