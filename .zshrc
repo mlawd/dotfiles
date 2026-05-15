@@ -157,3 +157,5 @@ cpenv() {
 # Loaded last so it can override anything above
 # =============================================================================
 [[ -f "$HOME/.local.zshrc" ]] && source "$HOME/.local.zshrc"
+
+eval "$(zellij setup --generate-auto-start zsh)"
