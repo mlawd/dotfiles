@@ -12,11 +12,7 @@ permission:
     "*": deny
     "gt *": allow
     "gh *": allow
-    "git diff*": allow
-    "git log*": allow
-    "git status*": allow
-    "git add*": allow
-    "git commit*": allow
+    "git *": allow
   task:
     "*": deny
     "orchestrator-*": allow
