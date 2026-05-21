@@ -141,7 +141,9 @@ st() {
 
   echo $wt
 
-  git worktree add "$wt" main -f
+  local branch="${2:-main}"
+
+  git worktree add "$wt" "$branch" -f
 
   cd "$wt"
 }
