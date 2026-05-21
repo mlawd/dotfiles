@@ -1,11 +1,11 @@
-# Orchestrator Architecture
+# Subagent Architecture
 
 ## Overview
 
 The architecture has three layers:
 
-- **Skills** — portable markdown describing *how* to do specific work well (methodology, checklists, output formats). Live in `skills/<name>/SKILL.md`.
-- **Agents** — OpenCode-specific execution profiles (model, permissions, context isolation). Live in `agents/<name>.md`. Each agent loads one or more skills on entry.
+- **Skills** — portable markdown describing *how* to do specific work well (methodology, checklists, output formats). Live in `agents/skills/<name>/SKILL.md`.
+- **Agents** — OpenCode-specific execution profiles (model, permissions, context isolation). Live in `agents/agents/<name>.md`. Each agent loads one or more skills on entry.
 - **Commands** — entry points that route to an agent. Live in `commands/<name>.md`.
 
 The orchestrator owns the live working state. It handles discovery, planning, flow control, branch operations, and user communication, and delegates narrow execution and review tasks to specialized sub-agents.
@@ -14,10 +14,10 @@ The orchestrator owns the live working state. It handles discovery, planning, fl
 orchestrator (primary, loads `orchestrating-stacked-prs` skill)
   |-- explore                      (Phase 1: codebase discovery)
   |
-  +-- per phase in Phase 3:
-      |-- orchestrator-implementer (loads `implementation` skill)
-      |-- orchestrator-reviewer    (loads `code-review` skill)
-      +-- orchestrator-implementer (fix if needed; max 2 review cycles)
+  +-- per implementation phase:
+      |-- builder                  (loads implementation prompt)
+      |-- architect                (loads `code-review` skill)
+      +-- builder (same phase task ID; fix if needed; review limit applies)
   |
   +-- orchestrator-planner         (loads `planning` skill, fallback only)
 ```
@@ -31,6 +31,7 @@ orchestrator (primary, loads `orchestrating-stacked-prs` skill)
 | `exploring` | Orchestrator, explore subagent | Discover codebase context, produce Exploration Packet |
 | `planning` | Orchestrator, planner subagent | Produce stacked-PR plan with verbose packets |
 | `orchestrating-stacked-prs` | Orchestrator | End-to-end stacked PR workflow |
+| `subagent-driven-development` | Orchestrator | Execute multi-phase work with Builder/Architect review loops |
 | `implementation` | Implementer subagent | Execute a single phase, anti-drift, packet-following |
 | `code-review` | Reviewer subagent | Review changes, produce verdict |
 | `verification-before-completion` | All agents claiming done | Evidence before assertions |
@@ -46,6 +47,8 @@ orchestrator (primary, loads `orchestrating-stacked-prs` skill)
 | `orchestrator-planner` | subagent, hidden | read-only, bash: git log only | `planning` |
 | `orchestrator-implementer` | subagent, hidden | full access (edit, write, bash) | `implementation`, `verification-before-completion` |
 | `orchestrator-reviewer` | subagent, hidden | read-only, bash: git diff/log/show | `code-review` |
+| `builder` | subagent | read/edit, todowrite, bash without git/gh/gt | implementation phase work |
+| `architect` | subagent | read-only, git/gh/gt allowed for review inspection | `code-review` |
 
 ## Commands
 
@@ -132,27 +135,30 @@ title: Implementation (Phases 3-4)
 sequenceDiagram
     actor u as User
     participant o as Orchestrator
-    participant i as orchestrator-implementer
-    participant r as orchestrator-reviewer
+    participant b as Builder
+    participant a as Architect
 
     o ->> o: gt sync
     loop each phase in plan
-        o ->> i: Phase details + packet + conventions
-        i ->> i: Implementation skill (read, edit, verify, fix)
-        i ->> o: Implementation report
+        o ->> b: Phase details + prompt + conventions
+        b ->> b: Implement phase + verify
+        b ->> o: Implementation report + task ID
         o ->> o: gt create branch
-        o ->> r: Phase intent + ticket context
-        r ->> r: Code-review skill (diff, checklist, verdict)
-        r ->> o: APPROVE or REQUEST_CHANGES
+        o ->> a: Phase intent + current diff + review prompt
+        a ->> a: Code-review skill (fresh session)
+        a ->> o: APPROVE or REQUEST_CHANGES
 
-        loop REQUEST_CHANGES (max 2 cycles)
-            o ->> o: Decide reuse vs fresh implementer
-            o ->> i: Review findings to fix
-            i ->> i: Fix + verify
-            i ->> o: Fix report
+        loop REQUEST_CHANGES (same Builder task ID; max 3 reviews)
+            o ->> b: Review findings to fix
+            b ->> b: Fix + verify
+            b ->> o: Fix report
             o ->> o: gt modify --all
-            o ->> r: Re-review
-            r ->> o: APPROVE or REQUEST_CHANGES
+            o ->> a: Fresh re-review
+            a ->> o: APPROVE or REQUEST_CHANGES
+        end
+
+        opt issues remain after 3rd review
+            o ->> u: Escalate for human input
         end
 
         o ->> o: gt submit
@@ -170,7 +176,9 @@ sequenceDiagram
 - Keep the orchestrator's working context compact.
 - Treat immutable phase artifacts as snapshots, not shared scratchpads.
 - Skills compose by reference, loaded on-demand to avoid context bloat.
-- Cap review cycles at 2 per phase. Escalate to the user if CRITICAL issues persist.
+- Reuse the original Builder task ID for fixes in a phase.
+- Start a fresh Architect session for every review.
+- Escalate to the user after the 3rd review if any issue remains, including minor issues.
 
 ## Portability
 
