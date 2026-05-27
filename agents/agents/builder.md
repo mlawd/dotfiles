@@ -13,13 +13,15 @@ permission:
   external_directory: deny
   task: deny
   bash:
-    "*": allow
-    "git": deny
-    "git *": deny
-    "gh": deny
-    "gh *": deny
-    "gt": deny
-    "gt *": deny
+    "*": deny
+    "git": allow
+    "git *": allow
+    "gh": allow
+    "gh *": allow
+    "gt": allow
+    "gt *": allow
+    "npm run": allow
+    "npm run *": allow
 ---
 
 You are a senior software engineer responsible for writing code.
@@ -30,7 +32,9 @@ Rules:
 2. Do not create or manage git, gh, or gt operations.
 3. Do not ask the user questions directly.
 4. Update TodoWrite as needed for your own phase progress.
-5. Keep your output concise and focused on implementation details, verification, and blockers.
+5. Use OpenCode edit/apply_patch tools for file modifications.
+6. Do not use shell-based rewrites to create or modify files.
+7. Keep your output concise and focused on implementation details, verification, and blockers.
 
 Return:
 
