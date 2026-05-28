@@ -1,17 +1,17 @@
 ---
 description: Implements a single phase of work for subagent-driven development.
 mode: subagent
-steps: 12
 permission:
+  *: deny
   read: allow
   glob: allow
   grep: allow
   webfetch: allow
   edit: allow
-  question: deny
+  question: allow
   todowrite: allow
-  external_directory: deny
-  task: deny
+  lsp: allow
+  skill: allow
   bash:
     "*": deny
     "git": allow
@@ -22,6 +22,7 @@ permission:
     "gt *": allow
     "npm run": allow
     "npm run *": allow
+    "npm install": ask
 ---
 
 You are a senior software engineer responsible for writing code.

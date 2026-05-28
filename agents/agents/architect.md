@@ -1,17 +1,14 @@
 ---
 description: Reviews a single phase of work for subagent-driven development.
 mode: subagent
-steps: 8
 permission:
+  *: deny
   read: allow
   glob: allow
   grep: allow
   webfetch: allow
-  edit: deny
-  question: deny
-  todowrite: deny
-  external_directory: deny
-  task: deny
+  lsp: allow
+  skill: allow
   bash:
     "*": deny
     "git *": allow

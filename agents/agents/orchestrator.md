@@ -2,8 +2,7 @@
 description: Coordinates exploration, brainstorming, planning, and stacked subagent-driven development.
 mode: primary
 permission:
-  edit: deny
-  external_directory: deny
+  *: deny
   read: allow
   glob: allow
   grep: allow
