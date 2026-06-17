@@ -14,7 +14,7 @@ per-branch breakdown that categorises each thread as **needs fix** or
 **dismiss**, with a proposed action for each.
 
 This skill only analyses. It does not implement fixes, post replies, or resolve
-threads. The `comment-resolver` skill handles implementation.
+threads. 
 
 ## Phase 1: Discover the stack
 

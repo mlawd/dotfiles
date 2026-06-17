@@ -157,6 +157,38 @@ st() {
 eval "$(zellij setup --generate-auto-start zsh)"
 
 # =============================================================================
+# Zellij: rename the current tab on cd (git-repo aware)
+#   - inside a repo:      repo root name        (~/dotfiles/scripts -> dotfiles)
+#   - inside a worktree:  repo:worktree         (~/dotfiles/.wt/feat-x -> dotfiles:feat-x)
+#   - otherwise:          last path segment
+# =============================================================================
+zellij_tab_name() {
+  emulate -L zsh
+  local name top gdir cdir
+  local -a info
+  info=("${(@f)$(git rev-parse --show-toplevel --git-dir --git-common-dir 2>/dev/null)}")
+  if [[ -n "${info[1]}" ]]; then
+    top=${info[1]}
+    gdir=${info[2]:A}
+    cdir=${info[3]:A}
+    if [[ "$gdir" != "$cdir" ]]; then
+      name="${cdir:h:t}:${top:t}"   # linked worktree
+    else
+      name="${top:t}"               # main working tree
+    fi
+  else
+    name="${PWD:t}"                  # not a git repo
+  fi
+  command zellij action rename-tab "$name" 2>/dev/null
+}
+
+if [[ -n "$ZELLIJ" ]]; then
+  autoload -U add-zsh-hook
+  add-zsh-hook chpwd zellij_tab_name
+  zellij_tab_name   # set for the initial directory
+fi
+
+# =============================================================================
 # Local overrides (machine-specific config, secrets, project aliases)
 # Loaded last so it can override anything above
 # =============================================================================
