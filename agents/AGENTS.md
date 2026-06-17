@@ -9,6 +9,10 @@ Do not skip brainstorming unless the user explicitly opts out or the task is
 purely mechanical, such as formatting, renaming, or applying an already-approved
 change.
 
+## Planning
+
+**NEVER** start implementation without first confirming the plan.
+
 ## Branching
 
 Use this branch naming format:
