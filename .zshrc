@@ -48,7 +48,6 @@ export PATH="$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk:
 # Aliases
 # =============================================================================
 alias n='nvim'
-alias o='opencode'
 alias dfs='cd ~/dotfiles'
 alias creds='n ~/.aws/credentials'
 alias orc='n ~/.config/opencode/opencode.json'
@@ -65,6 +64,13 @@ unalias gwt 2>/dev/null
 # =============================================================================
 # Functions
 # =============================================================================
+
+o() {
+  local port
+  port=$(jot -r 1 49152 65535)
+  OPENCODE_PORT="$port" \
+  opencode --port "$port" "$@"
+}
 
 # edit & source zshrc / local overrides
 zrc() { n ~/.zshrc && source ~/.zshrc; }
@@ -148,11 +154,7 @@ st() {
   cd "$wt"
 }
 
-cpenv() {
-  local git_dir
-  git_dir="$(dirname "$(git rev-parse --git-common-dir)")"
-  cp "$git_dir/.env*" ./
-}
+eval "$(zellij setup --generate-auto-start zsh)"
 
 # =============================================================================
 # Local overrides (machine-specific config, secrets, project aliases)
@@ -160,4 +162,6 @@ cpenv() {
 # =============================================================================
 [[ -f "$HOME/.local.zshrc" ]] && source "$HOME/.local.zshrc"
 
-eval "$(zellij setup --generate-auto-start zsh)"
+# >>> oh-my-opencode-slim background subagents >>>
+export OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true
+# <<< oh-my-opencode-slim background subagents <<<
