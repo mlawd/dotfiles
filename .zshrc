@@ -194,6 +194,13 @@ fi
 # =============================================================================
 [[ -f "$HOME/.local.zshrc" ]] && source "$HOME/.local.zshrc"
 
+# bun completions
+[ -s "/Users/mlawd/.bun/_bun" ] && source "/Users/mlawd/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 # >>> oh-my-opencode-slim background subagents >>>
 export OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true
 # <<< oh-my-opencode-slim background subagents <<<
