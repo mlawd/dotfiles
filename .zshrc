@@ -48,7 +48,6 @@ export PATH="$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk:
 # Aliases
 # =============================================================================
 alias n='nvim'
-alias o='opencode'
 alias dfs='cd ~/dotfiles'
 alias creds='n ~/.aws/credentials'
 alias orc='n ~/.config/opencode/opencode.json'
@@ -65,6 +64,13 @@ unalias gwt 2>/dev/null
 # =============================================================================
 # Functions
 # =============================================================================
+
+o() {
+  local port
+  port=$(jot -r 1 49152 65535)
+  OPENCODE_PORT="$port" \
+  opencode --port "$port" "$@"
+}
 
 # edit & source zshrc / local overrides
 zrc() { n ~/.zshrc && source ~/.zshrc; }
@@ -141,16 +147,49 @@ st() {
 
   echo $wt
 
-  git worktree add "$wt" main -f
+  local branch="${2:-main}"
+
+  git worktree add "$wt" "$branch" -f
 
   cd "$wt"
 }
 
-cpenv() {
-  local git_dir
-  git_dir="$(dirname "$(git rev-parse --git-common-dir)")"
-  cp "$git_dir/.env*" ./
+# Orca manages its own terminal session; don't replace it with Zellij.
+if [[ "$TERM_PROGRAM" != "Orca" ]]; then
+  eval "$(zellij setup --generate-auto-start zsh)"
+fi
+
+# =============================================================================
+# Zellij: rename the current tab on cd (git-repo aware)
+#   - inside a repo:      repo root name        (~/dotfiles/scripts -> dotfiles)
+#   - inside a worktree:  repo:worktree         (~/dotfiles/.wt/feat-x -> dotfiles:feat-x)
+#   - otherwise:          last path segment
+# =============================================================================
+zellij_tab_name() {
+  emulate -L zsh
+  local name top gdir cdir
+  local -a info
+  info=("${(@f)$(git rev-parse --show-toplevel --git-dir --git-common-dir 2>/dev/null)}")
+  if [[ -n "${info[1]}" ]]; then
+    top=${info[1]}
+    gdir=${info[2]:A}
+    cdir=${info[3]:A}
+    if [[ "$gdir" != "$cdir" ]]; then
+      name="${cdir:h:t}:${top:t}"   # linked worktree
+    else
+      name="${top:t}"               # main working tree
+    fi
+  else
+    name="${PWD:t}"                  # not a git repo
+  fi
+  command zellij action rename-tab "$name" 2>/dev/null
 }
+
+if [[ -n "$ZELLIJ" ]]; then
+  autoload -U add-zsh-hook
+  add-zsh-hook chpwd zellij_tab_name
+  zellij_tab_name   # set for the initial directory
+fi
 
 # =============================================================================
 # Local overrides (machine-specific config, secrets, project aliases)
@@ -158,4 +197,16 @@ cpenv() {
 # =============================================================================
 [[ -f "$HOME/.local.zshrc" ]] && source "$HOME/.local.zshrc"
 
-eval "$(zellij setup --generate-auto-start zsh)"
+# bun completions
+[ -s "/Users/mlawd/.bun/_bun" ] && source "/Users/mlawd/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# >>> oh-my-opencode-slim background subagents >>>
+export OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true
+# <<< oh-my-opencode-slim background subagents <<<
+
+# Added by codebase-memory-mcp install
+export PATH="/Users/mlawd/.local/bin:$PATH"
