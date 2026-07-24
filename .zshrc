@@ -154,7 +154,10 @@ st() {
   cd "$wt"
 }
 
-eval "$(zellij setup --generate-auto-start zsh)"
+# Orca manages its own terminal session; don't replace it with Zellij.
+if [[ "$TERM_PROGRAM" != "Orca" ]]; then
+  eval "$(zellij setup --generate-auto-start zsh)"
+fi
 
 # =============================================================================
 # Zellij: rename the current tab on cd (git-repo aware)
@@ -204,3 +207,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # >>> oh-my-opencode-slim background subagents >>>
 export OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=true
 # <<< oh-my-opencode-slim background subagents <<<
+
+# Added by codebase-memory-mcp install
+export PATH="/Users/mlawd/.local/bin:$PATH"
